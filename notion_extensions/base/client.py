@@ -1,7 +1,16 @@
-from typing import Any, Dict, Final, NoReturn, Tuple, Union, Optional
+from typing import Any, Dict, Final, List, NoReturn, Tuple, Union, Optional
+try:
+    from typing import Literal
+except:
+    from typing_extensions import Literal
 import os
 
 import requests
+
+PAGE_PROPERTY = Dict[str, Any]
+BLOCK_OBJECT = Dict[str, Any]
+PAGE_ICON = Dict[str, Any]
+PAGE_COVER = Dict[str, Any]
 
 class NotionClient:
     """
@@ -23,7 +32,7 @@ class NotionClient:
     get_child_blocks(block_id: str, start_cursor: Optional[str])
         Get child blocks with block_id
     """
-    def __init__(self, key: Optional[str] = None, name: str = 'NOTION_KEY') -> NoReturn:
+    def __init__(self, *, key: Optional[str] = None, name: str = 'NOTION_KEY') -> NoReturn:
         """
         Parameters
         ----------
@@ -37,7 +46,7 @@ class NotionClient:
         if key is None:
             key = os.environ.get(name)
             if key is None:
-                raise ValueError(f'if `key` is None, global environment must have {name}.')
+                raise ValueError(f'if `key` is None, global environment must have `{name}`.')
         
         self.__key = key
         self.__version: Final[str] = '2021-08-16'
@@ -56,7 +65,41 @@ class NotionClient:
         """
         return self.__version
 
-    def get_page(self, page_id: str) -> Tuple[int, Dict[str, Any]]:
+    def create_page(self, *, parent_id: str, parent_type: Literal['database', 'page'],
+                    properties: PAGE_PROPERTY, children: Optional[List[BLOCK_OBJECT]] = None,
+                    icon: Optional[PAGE_ICON] = None, cover: Optional[PAGE_COVER] = None) -> Tuple[int, Dict[str, Any]]:
+        if parent_type in ('database', 'page'):
+            raise ValueError('`parent_type` must be database or page')
+        parent_type = f'{parent_type}_id'
+        # set params
+        params = {
+            parent_type: parent_id,
+            'properties': properties,
+        }
+        # update params
+        if children is not None:
+            params.update({
+                'children': children,
+            })
+        if icon is not None:
+            params.update({
+                'icon': icon,
+            })
+        if cover is not None:
+            params.update({
+                'cover': cover,
+            })
+        # create a page
+        headers = {
+            'Notion-Version': self.version,
+            'Authorization': f'Bearer {self.key}',
+        }
+        res = requests.post(f'https://api.notion.com/v1/pages/',
+                           headers=headers, params=params)
+
+        return res.status_code, res.json()
+
+    def get_page(self, *, page_id: str) -> Tuple[int, Dict[str, Any]]:
         """
         Get a page with page_id
 
@@ -75,10 +118,10 @@ class NotionClient:
             'Authorization': f'Bearer {self.key}',
         }
         res = requests.get(f'https://api.notion.com/v1/pages/{page_id}',
-                            headers=headers)
+                           headers=headers)
         return res.status_code, res.json()
 
-    def get_block(self, block_id: str) -> Tuple[int, Dict[str, Any]]:
+    def get_block(self, *, block_id: str) -> Tuple[int, Dict[str, Any]]:
         """
         Get a block with block_id
 
@@ -97,10 +140,10 @@ class NotionClient:
             'Authorization': f'Bearer {self.key}',
         }
         res = requests.get(f'https://api.notion.com/v1/blocks/{block_id}',
-                            headers=headers)
+                           headers=headers)
         return res.status_code, res.json()
 
-    def get_child_blocks(self, block_id: str, start_cursor: Optional[str] = None) -> Tuple[int, Dict[str, Any]]:
+    def get_child_blocks(self, *, block_id: str, start_cursor: Optional[str] = None) -> Tuple[int, Dict[str, Any]]:
         """
         Get child blocks with block_id
 
@@ -125,5 +168,5 @@ class NotionClient:
             'start_cursor': start_cursor,
         }
         res = requests.get(f'https://api.notion.com/v1/blocks/{block_id}/children',
-                            headers=headers, params=params)
+                           headers=headers, params=params)
         return res.status_code, res.json()
