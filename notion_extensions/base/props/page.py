@@ -25,16 +25,14 @@ class Title(BaseProps):
         Clear data of title
     """
     TEMPLATE: Final[Dict] = {
-        'Name': {
-            'title': [
-                {
-                    'type': 'text',
-                    'text': {
-                        'content': '',
-                    },
+        'title': [
+            {
+                'type': 'text',
+                'text': {
+                    'content': '',
                 },
-            ],
-        },
+            },
+        ],
     }
     def __init__(self, title: str = ''):
         """
@@ -69,5 +67,5 @@ class Title(BaseProps):
         if key not in ('content', 'title'):
             raise KeyError('You can change only a value of `content`')
         item = str(item)
-        self.data['Name']['title'][0]['text']['content'] = item
+        self.data['title'][0]['text']['content'] = item
         self.__title = item

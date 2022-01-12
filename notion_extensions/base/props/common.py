@@ -22,6 +22,9 @@ class BaseProps(UserDict):
         """
         raise NotImplementedError
 
+    def json(self) -> dict:
+        return self.data.copy()
+
     def pop(self):
         """
         pop()
