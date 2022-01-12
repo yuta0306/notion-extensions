@@ -103,10 +103,11 @@ class NotionClient:
         Returns
         -------
         str
-            ID from url
+            ID from URL format
         """
-        id_ = urllike.split('/')[-1]
-        id_ = id_.split('-')[-1]
+        id_ = urllike.split('/')[-1]  # retrieve the last string
+        id_ = id_.split('-')[-1]  # remove string like title
+        id_ = id_.split('?')[0]  # remove params of url
         return id_
 
     # Pages
@@ -129,9 +130,8 @@ class NotionClient:
                            headers=self.headers)
         return res.status_code, res.json()
 
-    def create_page(self, *, parent_type: Literal['database', 'page'], properties: Title,
-                    parent_id: Optional[str] = None, page_id: Optional[Union[str, UrlLike]] = None,
-                    children: Optional[List[BLOCK_OBJECT]] = None, icon: Optional[PAGE_ICON] = None,
+    def create_page(self, *, parent_id: Optional[Union[str, UrlLike]], parent_type: Literal['database', 'page'],
+                    properties: Title, children: Optional[List[BLOCK_OBJECT]] = None, icon: Optional[PAGE_ICON] = None,
                     cover: Optional[PAGE_COVER] = None) -> Tuple[int, Dict[str, Any]]:  # create a page
         """
         Create a page with page_id
@@ -143,13 +143,8 @@ class NotionClient:
         properties : Title or Dict
             properties of the page you will create
             using Title class is recommended
-        parent_id : str, optional
-            ID of the parent database or page
-            parent_id should be UUIDv4. you can fetch this in the response of get_page
-        page_id : str or UrlLike, optional
-            ID of the parent database or page
-            page_id appears in URL. i.e.) https://www.notion.so/{title?}-{page_id}
-            this can accept page url
+        parent_id : str or UrlLike, optional
+            ID of the parent database or page, or URL of the parent database or page
         children : List of BlockObject, optional
             List of a block object
         icon : Icon, optional
@@ -165,24 +160,8 @@ class NotionClient:
         if parent_type not in ('database', 'page'):  # parent_type must be `database` or `page`
             raise ValueError('`parent_type` must be database or page')
         parent_type = f'{parent_type}_id'
-
-        if parent_id is None and page_id is None:  # parent_id = None, page_id = None
-            raise ValueError('`parent_id` or `page_id` must have string value')
-        elif parent_id is None:  # if only page_id has value, this method should get ID of the page of UUIDv4
-            page_id = self._parse_id(page_id)  # parse ID if page_id is like url
-            parent_id = page_id
-            # status_code, res = self.get_page(page_id=page_id)
-            # if status_code == 200:  # if this could get the page with `page_id`
-            #     parent_id = res['id']
-            # else:  # else raise error
-            #     err_msg = f"""Could not find the page of `f{page_id}`
-            #     ==========================
-            #     STATUS_CODE: {status_code}
-            #     RESPONSE  : {res}
-            #     ==========================
-            #     """
-            #     raise ValueError(err_msg)
-        
+        parent_id = self._parse_id(parent_id)
+                
         # set params
         body = {
             'parent': {
@@ -236,14 +215,10 @@ class NotionClient:
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
         """
-        headers = {
-            'Notion-Version': self.version,
-            'Authorization': f'Bearer {self.key}',
-        }
         params = {
             'page_size': 100,  # max size of page_size
             'start_cursor': start_cursor,
         }
         res = requests.get(f'https://api.notion.com/v1/blocks/{block_id}/children',
-                           headers=headers, params=params)
+                           headers=self.headers, params=params)
         return res.status_code, res.json()
