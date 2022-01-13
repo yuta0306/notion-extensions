@@ -11,10 +11,15 @@ class BaseProps(UserDict):
         super().__init__()
         self.data = self.TEMPLATE
 
-    def __setitem__(self, key: str, item: Any) -> NoReturn:
-        return super().__setitem__(key, item)
+    def __setitem__(self, key: str, item: Any):
+        """
+        Raises
+        ------
+        NotImplementedError
+        """
+        raise NotImplementedError
 
-    def __delitem__(self, key) -> NoReturn:
+    def __delitem__(self, key):
         """
         Raises
         ------
@@ -72,6 +77,32 @@ class BaseProps(UserDict):
         raise NotImplementedError
 
 class Annotations(BaseProps):
+    """
+    Annotations
+    Text property values of a common structure
+
+    Attributes
+    ----------
+    bold : bool, default=False
+        bold text
+    italic : bool, default=False
+        italic text
+    strikethrough : bool, default=False
+        strikethrough text
+    underline : bool, default=False
+        underline text
+    code : bool, default=False
+        code text
+    color : str, default='default'
+        text color
+
+    Methods
+    -------
+    clear()
+        Clear data of text
+    json()
+        Return this class as dictionary
+    """
     TEMPLATE: Final[Dict] = {
         "annotations": {
             "bold": False,
@@ -85,12 +116,12 @@ class Annotations(BaseProps):
     def __init__(self, bold: bool = False, italic: bool = False, strikethrough: bool = False,
                  underline: bool = False, code: bool = False, color: str = 'default'):
         super().__init__()
-        self['bold'] = bold
-        self['italic'] = italic
-        self['strikethrough'] = strikethrough
-        self['underline'] = underline
-        self['code'] = code
-        self['color'] = color
+        self.bold = bold
+        self.italic = italic
+        self.strikethrough = strikethrough
+        self.underline = underline
+        self.code = code
+        self.color = color
 
     @property
     def bold(self):
@@ -98,11 +129,11 @@ class Annotations(BaseProps):
 
     @bold.setter
     def bold(self, value: bool):
-        self['bold'] = value
+        self.data['annotations']['bold'] = value
 
     @bold.deleter
     def bold(self) -> NoReturn:
-        self['bold'] = False
+        self.data['annotations']['bold'] = False
 
     @property
     def italic(self):
@@ -110,11 +141,11 @@ class Annotations(BaseProps):
 
     @italic.setter
     def italic(self, value: bool):
-        self['italic'] = value
+        self.data['annotations']['italic'] = value
 
     @italic.deleter
     def italic(self) -> NoReturn:
-        self['italic'] = False
+        self.data['annotations']['italic'] = False
 
     @property
     def strikethrough(self):
@@ -122,11 +153,11 @@ class Annotations(BaseProps):
 
     @strikethrough.setter
     def strikethrough(self, value: bool):
-        self['strikethrough'] = value
+        self.data['annotations']['strikethrough'] = value
 
     @strikethrough.deleter
     def strikethrough(self) -> NoReturn:
-        self['strikethrough'] = False
+        self.data['annotations']['strikethrough'] = False
 
     @property
     def underline(self):
@@ -134,11 +165,11 @@ class Annotations(BaseProps):
 
     @underline.setter
     def underline(self, value: bool):
-        self['underline'] = value
+        self.data['annotations']['underline'] = value
 
     @underline.deleter
     def underline(self) -> NoReturn:
-        self['underline'] = False
+        self.data['annotations']['underline'] = False
 
     @property
     def code(self):
@@ -146,11 +177,11 @@ class Annotations(BaseProps):
 
     @code.setter
     def code(self, value: bool):
-        self['code'] = value
+        self.data['annotations']['code'] = value
 
     @code.deleter
     def code(self) -> NoReturn:
-        self['code'] = False
+        self.data['annotations']['code'] = False
 
     @property
     def color(self):
@@ -158,23 +189,16 @@ class Annotations(BaseProps):
 
     @color.setter
     def color(self, value: str):
-        self['color'] = value
+        self.data['annotations']['color'] = value
 
     @color.deleter
     def color(self) -> NoReturn:
-        self['color'] = 'default'
+        self.data['annotations']['color'] = 'default'
 
-    def __setitem__(self, key: Literal['bold', 'italic', 'strikethrough', 'underline', 'code', 'color'],
-                    item: Union[bool, str]) -> NoReturn:
-        if key not in ('bold', 'italic', 'strikethrough', 'underline', 'code', 'color'):
-            raise KeyError(f'key must be `bold`or `italic`or `strikethrough`or `underline`or `code`or `color`, but {key}')
-        self.data['annotations'][key] = item
-
-
-class Text(BaseProps):
+class PlainText(BaseProps):
     """
-    Text
-    Text property values of a common structure
+    PlainText
+    Text property values, this is a plain text and does not have any text decoration
 
     Attributes
     ----------
@@ -196,25 +220,162 @@ class Text(BaseProps):
     }
     def __init__(self, text: str = ''):
         super().__init__()
-        self.__text = text
-        self.data['text'] = text
+        self.text = text
 
     @property
     def text(self):
-        return self.__text
+        return self.data['text']
 
     @text.setter
     def text(self, value: str):
-        self.__text = value
-        self['text'] = value
+        self.data['text'] = value
 
     @text.deleter
     def text(self) -> NoReturn:
-        self.__text = ''
-        self['text'] = ''
+        self.data['text'] = ''
 
-    def __setitem__(self, key: Literal['text', 'content'], item: str) -> NoReturn:
-        if key not in ('text', 'content'):
-            raise KeyError(f'key must be `text` or `content`, but {key}')
-        self.__text = item
-        self.data['text']['content'] = item
+class Text(BaseProps):
+    """
+    Text
+    Text property values
+
+    Attributes
+    ----------
+    text: str, default=''
+        text
+    bold : bool, default=False
+        bold text
+    italic : bool, default=False
+        italic text
+    strikethrough : bool, default=False
+        strikethrough text
+    underline : bool, default=False
+        underline text
+    code : bool, default=False
+        code text
+    color : str, default='default'
+        text color
+
+    Methods
+    -------
+    clear()
+        Clear data of text
+    json()
+        Return this class as dictionary
+    """
+    TEMPLATE: Final[Dict] = {
+        "type": "text",
+        "text": {
+            "content": "",
+        },
+        "annotations": {
+            "bold": False,
+            "italic": False,
+            "strikethrough": False,
+            "underline": False,
+            "code": False,
+            "color": "default",
+        },
+    }
+    def __init__(self, text: str = '', bold: bool = False, italic: bool = False, strikethrough: bool = False,
+                 underline: bool = False, code: bool = False, color: str = 'default'):
+        super().__init__()
+        self.__text = PlainText(text=text)
+        self.__annotations = Annotations(bold=bold, italic=italic, strikethrough=strikethrough,
+                                         underline=underline, code=code, color=color)
+
+    @property
+    def data(self):
+        pairs = [
+            *self.__text.items(),
+            *self.__annotations.items()
+        ]
+        return dict(pairs)
+
+    @data.setter
+    def data(self, value):
+        pass
+
+    @property
+    def text(self):
+        return self.__text.text
+
+    @text.setter
+    def text(self, value: str):
+        self.__text.text = value
+
+    @text.deleter
+    def text(self):
+        del self.__text.text
+
+    @property
+    def bold(self):
+        return self.__annotations.bold
+
+    @bold.setter
+    def bold(self, value: bool):
+        self.__annotations.bold = value
+
+    @bold.deleter
+    def bold(self) -> NoReturn:
+        del self.__annotations.bold
+
+    @property
+    def italic(self):
+        return self.__annotations.italic
+
+    @italic.setter
+    def italic(self, value: bool):
+        self.__annotations.italic = value
+
+    @italic.deleter
+    def italic(self) -> NoReturn:
+        del self.__annotations.italic
+
+    @property
+    def strikethrough(self):
+        return self.__annotations.strikethrough
+
+    @strikethrough.setter
+    def strikethrough(self, value: bool):
+        self.__annotations.strikethrough = value
+
+    @strikethrough.deleter
+    def strikethrough(self) -> NoReturn:
+        del self.__annotations.strikethrough
+
+    @property
+    def underline(self):
+        return self.__annotations.underline
+
+    @underline.setter
+    def underline(self, value: bool):
+        self.__annotations.underline = value
+
+    @underline.deleter
+    def underline(self) -> NoReturn:
+        del self.__annotations.underline
+
+    @property
+    def code(self):
+        return self.__annotations.code
+
+    @code.setter
+    def code(self, value: bool):
+        self.__annotations.code = value
+
+    @code.deleter
+    def code(self) -> NoReturn:
+        del self.__annotations.code
+
+    @property
+    def color(self):
+        return self.__annotations.color
+
+    @color.setter
+    def color(self, value: str):
+        self.__annotations.color = value
+
+    @color.deleter
+    def color(self):
+        del self.__annotations.color
