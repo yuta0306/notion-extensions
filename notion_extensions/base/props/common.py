@@ -224,15 +224,15 @@ class PlainText(BaseProps):
 
     @property
     def text(self):
-        return self.data['text']
+        return self.data['text']['content']
 
     @text.setter
     def text(self, value: str):
-        self.data['text'] = value
+        self.data['text']['content'] = value
 
     @text.deleter
     def text(self) -> NoReturn:
-        self.data['text'] = ''
+        self.data['text']['content'] = ''
 
 class Text(BaseProps):
     """
