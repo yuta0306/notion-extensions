@@ -227,6 +227,11 @@ class NotionClient:
         -------
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
+
+        Raises
+        ------
+        ValueError
+            if page_size is 0 or less than 0
         """
         if page_size <= 0:  # 1 <= page_size <= 100
             raise ValueError('page_size must be more than 0')
