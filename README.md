@@ -7,9 +7,19 @@ Notion API Client and Extensions
     - [ ] Pages
         - [x] Retrieve a page
         - [ ] Create a page
+            - [x] create page in page
+            - [x] create page in database
+            - [ ] create page with children blocks
+            - [ ] create page with icon
+            - [ ] create page with cover
         - [ ] Update a page
-        - [ ] Archive (delete) a page
+            - [ ] update page with children blocks (name: properties)
+            - [ ] archive (delete) or un-archive (restore)
+            - [ ] update icon for page
+            - [ ] update cover for page
+        - [ ] ~~Archive (delete) a page~~
         - [ ] Retrieve a page propoerty item
+            - [ ] ...
     - [ ] Databeses
         - [ ] Query a database
         - [ ] Create a database
@@ -17,9 +27,12 @@ Notion API Client and Extensions
         - [ ] Retrieve a database
         - [ ] ~~List databases (deprecated)~~
     - [ ] Blocks
-        - [ ] Retrieve a block
+        - [x] Retrieve a block
         - [ ] Update a block
-        - [ ] Retrieve block children
+            - [ ] archive (delete) or un-archive (restore)
+            - [ ] update block type `text`
+            - [ ] update block type `checked` (`to_do`)
+        - [x] Retrieve block children
         - [ ] Append block children
         - [ ] Delete a block
     - [ ] Users
@@ -29,4 +42,4 @@ Notion API Client and Extensions
     - [ ] Search
         - [ ] Search
 
-- [ ] Object Classes??
+- [ ] Property Values Object Classes??
