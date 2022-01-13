@@ -23,6 +23,8 @@ class Title(BaseProps):
     -------
     clear()
         Clear data of title
+    json()
+        Return this class as dictionary
     """
     TEMPLATE: Final[Dict] = {
         'title': [
@@ -42,7 +44,6 @@ class Title(BaseProps):
             Title of a page
         """
         super().__init__()
-        self.data = Title.TEMPLATE
         self['content'] = title
         self.__title = title
 
@@ -65,7 +66,7 @@ class Title(BaseProps):
 
     def __setitem__(self, key: Literal['content', 'title'], item: str) -> NoReturn:
         if key not in ('content', 'title'):
-            raise KeyError('You can change only a value of `content`')
+            raise KeyError(f'key must be `content` or `title`, but {key}')
         item = str(item)
         self.data['title'][0]['text']['content'] = item
         self.__title = item
