@@ -43,3 +43,30 @@ Notion API Client and Extensions
         - [ ] Search
 
 - [ ] Property Values Object Classes??
+     - [ ] page
+     - [ ] database
+     - [ ] block
+     - [ ] user
+     - [ ] common
+        - [x] BaseProp
+        - [x] Annotations
+        - [x] PlainText
+        - [x] Text
+        - [ ] RichText
+        - [ ] Number
+        - [ ] Select
+        - [ ] MultiSelect
+        - [ ] Date
+        - [ ] Relation
+        - [ ] Formula
+        - [ ] Rollup
+        - [ ] People
+        - [ ] Files
+        - [ ] Checkbox
+        - [ ] Url
+        - [ ] Email
+        - [ ] PhoneNumber
+        - [ ] CreatedTime
+        - [ ] CreatedBy
+        - [ ] LastEdited
+        - [ ] LastEditedBy
