@@ -1,3 +1,4 @@
+from collections import UserDict
 import json
 from typing import Any, Dict, Final, List, NoReturn, Tuple, Union, Optional
 try:
@@ -168,17 +169,15 @@ class NotionClient:
         """
         if parent_type not in ('database', 'page'):  # parent_type must be `database` or `page`
             raise ValueError('`parent_type` must be database or page')
+        parent_id = self._parse_id(parent_id, type_=parent_type)  # parse ID from URL
         parent_type = f'{parent_type}_id'
-        parent_id = self._parse_id(parent_id, type_=parent_type)
                 
         # set params
         body = {
             'parent': {
                 parent_type: parent_id,
             },
-            'properties': {
-                'title': properties.json(),  # parent is only a page <- ToDo
-            },
+            'properties': properties.json() if isinstance(properties, (UserDict, Title)) else properties,  # if props class, cast to json
             'children': children if children is not None else [],
             'icon': icon,
             'cover': cover,
