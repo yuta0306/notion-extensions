@@ -5,7 +5,7 @@ try:
 except:
     from typing_extensions import Literal
 
-from .common import BaseProps
+from .common import BaseProps, PlainText
 
 class Title(BaseProps):
     """
@@ -18,6 +18,11 @@ class Title(BaseProps):
     ----------
     title : str
         Title of a page
+    id_ : str, default='title'
+        Title property ID
+    in_page : bool, default=True
+        Page is created in page or not. If page is not in page, page is in database
+        if in_page is True, ID is set to `title`.
 
     Methods
     -------
@@ -36,37 +41,49 @@ class Title(BaseProps):
             },
         ],
     }
-    def __init__(self, title: str = ''):
+    def __init__(self, title: str = '', id_: str = 'title', in_page: bool = True):
         """
         Parameters
         ----------
         title : str, default=''
             Title of a page
+        id_ : str, default='title'
+            Title property ID
+        in_page : bool, default=True
+            Page is created in page or not. If page is not in page, page is in database
+            if in_page is True, ID is set to `title`.
         """
         super().__init__()
-        self['content'] = title
-        self.__title = title
+        self.__title = PlainText(text=title)
+        self.id_ = id_
+        self.in_page = in_page
+
+    @property
+    def data(self):
+        id_ = self.id_ if not self.in_page else 'title'
+        return {
+            id_: {
+                'title': [
+                    self.__title.json(),
+                ],
+            },
+        }
+    
+    @data.setter
+    def data(self, value):
+        pass
 
     @property
     def title(self) -> str:
         """
         Title of a page
         """
-        return self.__title
+        return self.__title.text
 
     @title.setter
     def title(self, value: str) -> NoReturn:
-        self.__title = str(value)
-        self['content'] = str(value)
+        self.__title.text = value
 
     @title.deleter
     def title(self) -> NoReturn:
-        self.__title = ''
-        self['content'] = ''
-
-    def __setitem__(self, key: Literal['content', 'title'], item: str) -> NoReturn:
-        if key not in ('content', 'title'):
-            raise KeyError(f'key must be `content` or `title`, but {key}')
-        item = str(item)
-        self.data['title'][0]['text']['content'] = item
-        self.__title = item
+        del self.__title.text
