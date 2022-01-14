@@ -59,13 +59,17 @@ class Title(BaseProps):
         if in_page:  # create page in page
             self.update(
                 {
-                    "title": self.__title,
+                    "title": {
+                        "title": [self.__title],
+                    },
                 }
             )
         else:  # create page in database
             self.update(
                 {
-                    id_: self.__title,
+                    id_: {
+                        "title": [self.__title],
+                    },
                 }
             )
 
