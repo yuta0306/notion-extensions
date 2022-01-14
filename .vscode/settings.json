@@ -9,7 +9,6 @@
         "--follow-imports=silent",
         "--ignore-missing-imports",
         "--show-column-numbers",
-        "--no-pretty",
         "--check-untyped-defs"
     ]
 }
