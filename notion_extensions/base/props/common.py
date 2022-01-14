@@ -1,4 +1,4 @@
-from typing import Any, Dict, Union
+from typing import Any, Dict, List, Union
 
 
 class BaseProps(dict):
@@ -100,8 +100,6 @@ class Annotations(BaseProps):
     -------
     clear()
         Clear data of text
-    json()
-        Return this class as dictionary
     """
 
     TEMPLATE: Dict[str, Dict[str, Union[str, bool]]] = {
@@ -219,8 +217,6 @@ class PlainText(BaseProps):
     -------
     clear()
         Clear data of text
-    json()
-        Return this class as dictionary
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -273,8 +269,6 @@ class Text(BaseProps):
     -------
     clear()
         Clear data of text
-    json()
-        Return this class as dictionary
     """
 
     TEMPLATE: Dict[str, Union[str, Dict[str, Union[str, bool]]]] = {
@@ -398,3 +392,77 @@ class Text(BaseProps):
     @color.deleter
     def color(self):
         del self.__annotations.color
+
+
+class RichText(BaseProps):
+    """
+    RichText
+    RichText property values
+
+    Methods
+    -------
+    append(text: Text)
+        Append Text to existing list of Text
+    extend(texts: List[Text])
+        Extend list of Text to existing list of Text
+    insert(index: int, Text)
+        Insert Text into specific index of existing list of Text
+    pop(index: int=None)
+        Pop Text from specific index of existing list of Text
+    clear()
+        Clear data of text
+    """
+
+    TEMPLATE: Dict[str, List[Dict[str, Union[str, dict]]]] = {
+        "rich_text": [
+            {
+                "type": "text",
+                "text": {
+                    "content": "",
+                },
+                "annotations": {
+                    "bold": False,
+                    "italic": False,
+                    "strikethrough": False,
+                    "underline": False,
+                    "code": False,
+                    "color": "default",
+                },
+            },
+        ],
+    }
+
+    def __init__(self, *texts: Text):
+        """
+        Parameters
+        ----------
+            texts: Text
+                Texts of RichText
+        """
+        super().__init__()
+        if len(texts) > 0:  # if texts are given
+            self.__texts = list(texts)
+        else:
+            self.__texts = [
+                Text(),
+            ]
+        self.update(
+            {
+                "rich_text": self.__texts,
+            }
+        )
+
+    def __getitem__(self, index: int) -> Text:
+        return self.__texts[index]
+
+    def append(self, text: Text) -> None:
+        self.__texts.append(text)
+
+    def extend(self, texts: List[Text]) -> None:
+        self.__texts.extend(texts)
+
+    def insert(self, index: int, text: Text) -> None:
+        self.__texts.insert(index, text)
+
+    def pop(self, index=None):
+        return self.__texts.pop(index)
