@@ -1,15 +1,12 @@
-from collections import UserDict
-from typing import Any, Dict, Final, List, NoReturn, Tuple, Union, Optional
-try:
-    from typing import Literal
-except:
-    from typing_extensions import Literal
+from typing import Any, Dict, Union
 
-class BaseProps(UserDict):
+
+class BaseProps(dict):
     TEMPLATE: Dict = {}
+
     def __init__(self):
         super().__init__()
-        self.data = self.TEMPLATE
+        self.update(self.TEMPLATE)
 
     def __setitem__(self, key: str, item: Any):
         """
@@ -28,7 +25,8 @@ class BaseProps(UserDict):
         raise NotImplementedError
 
     def json(self) -> dict:
-        return self.data.copy()
+        json = super().copy()
+        return json
 
     def pop(self):
         """
@@ -50,23 +48,24 @@ class BaseProps(UserDict):
         """
         raise NotImplementedError
 
-    def clear(self) -> NoReturn:
+    def clear(self) -> None:
         """
         clear()
 
         Returns
         -------
-        NoReturn
+        None
         """
-        self.data = self.TEMPLATE
+        self.update(self.TEMPLATE)
 
-    def update(self) -> NoReturn:
+    def update(self, __mapping, **kwargs):
         """
         Raises
         ------
         NotImplementedError
         """
-        raise NotImplementedError
+        for key, value in __mapping.items():
+            super().__setitem__(key, value)
 
     def setdefault(self, __key, __default):
         """
@@ -75,6 +74,7 @@ class BaseProps(UserDict):
         NotImplementedError
         """
         raise NotImplementedError
+
 
 class Annotations(BaseProps):
     """
@@ -103,7 +103,8 @@ class Annotations(BaseProps):
     json()
         Return this class as dictionary
     """
-    TEMPLATE: Final[Dict] = {
+
+    TEMPLATE: Dict[str, Dict[str, Union[str, bool]]] = {
         "annotations": {
             "bold": False,
             "italic": False,
@@ -113,8 +114,16 @@ class Annotations(BaseProps):
             "color": "default",
         },
     }
-    def __init__(self, bold: bool = False, italic: bool = False, strikethrough: bool = False,
-                 underline: bool = False, code: bool = False, color: str = 'default'):
+
+    def __init__(
+        self,
+        bold: bool = False,
+        italic: bool = False,
+        strikethrough: bool = False,
+        underline: bool = False,
+        code: bool = False,
+        color: str = "default",
+    ):
         super().__init__()
         self.bold = bold
         self.italic = italic
@@ -125,75 +134,76 @@ class Annotations(BaseProps):
 
     @property
     def bold(self):
-        return self.data['annotations']['bold']
+        return self["annotations"]["bold"]
 
     @bold.setter
     def bold(self, value: bool):
-        self.data['annotations']['bold'] = value
+        self["annotations"]["bold"] = value
 
     @bold.deleter
-    def bold(self) -> NoReturn:
-        self.data['annotations']['bold'] = False
+    def bold(self) -> None:
+        self["annotations"]["bold"] = False
 
     @property
     def italic(self):
-        return self.data['annotations']['italic']
+        return self["annotations"]["italic"]
 
     @italic.setter
     def italic(self, value: bool):
-        self.data['annotations']['italic'] = value
+        self["annotations"]["italic"] = value
 
     @italic.deleter
-    def italic(self) -> NoReturn:
-        self.data['annotations']['italic'] = False
+    def italic(self) -> None:
+        self["annotations"]["italic"] = False
 
     @property
     def strikethrough(self):
-        return self.data['annotations']['strikethrough']
+        return self["annotations"]["strikethrough"]
 
     @strikethrough.setter
     def strikethrough(self, value: bool):
-        self.data['annotations']['strikethrough'] = value
+        self["annotations"]["strikethrough"] = value
 
     @strikethrough.deleter
-    def strikethrough(self) -> NoReturn:
-        self.data['annotations']['strikethrough'] = False
+    def strikethrough(self) -> None:
+        self["annotations"]["strikethrough"] = False
 
     @property
     def underline(self):
-        return self.data['annotations']['underline']
+        return self["annotations"]["underline"]
 
     @underline.setter
     def underline(self, value: bool):
-        self.data['annotations']['underline'] = value
+        self["annotations"]["underline"] = value
 
     @underline.deleter
-    def underline(self) -> NoReturn:
-        self.data['annotations']['underline'] = False
+    def underline(self) -> None:
+        self["annotations"]["underline"] = False
 
     @property
     def code(self):
-        return self.data['annotations']['code']
+        return self["annotations"]["code"]
 
     @code.setter
     def code(self, value: bool):
-        self.data['annotations']['code'] = value
+        self["annotations"]["code"] = value
 
     @code.deleter
-    def code(self) -> NoReturn:
-        self.data['annotations']['code'] = False
+    def code(self) -> None:
+        self["annotations"]["code"] = False
 
     @property
     def color(self):
-        return self.data['annotations']['color']
+        return self["annotations"]["color"]
 
     @color.setter
     def color(self, value: str):
-        self.data['annotations']['color'] = value
+        self["annotations"]["color"] = value
 
     @color.deleter
-    def color(self) -> NoReturn:
-        self.data['annotations']['color'] = 'default'
+    def color(self) -> None:
+        self["annotations"]["color"] = "default"
+
 
 class PlainText(BaseProps):
     """
@@ -212,27 +222,30 @@ class PlainText(BaseProps):
     json()
         Return this class as dictionary
     """
-    TEMPLATE: Final[Dict] = {
+
+    TEMPLATE: Dict[str, Union[str, Dict]] = {
         "type": "text",
         "text": {
-            "content": "The title",
+            "content": "",
         },
     }
-    def __init__(self, text: str = ''):
+
+    def __init__(self, text: str = ""):
         super().__init__()
         self.text = text
 
     @property
     def text(self):
-        return self.data['text']['content']
+        return self["text"]["content"]
 
     @text.setter
     def text(self, value: str):
-        self.data['text']['content'] = value
+        self["text"]["content"] = value
 
     @text.deleter
-    def text(self) -> NoReturn:
-        self.data['text']['content'] = ''
+    def text(self) -> None:
+        self["text"]["content"] = ""
+
 
 class Text(BaseProps):
     """
@@ -263,7 +276,8 @@ class Text(BaseProps):
     json()
         Return this class as dictionary
     """
-    TEMPLATE: Final[Dict] = {
+
+    TEMPLATE: Dict[str, Union[str, Dict[str, Union[str, bool]]]] = {
         "type": "text",
         "text": {
             "content": "",
@@ -277,24 +291,29 @@ class Text(BaseProps):
             "color": "default",
         },
     }
-    def __init__(self, text: str = '', bold: bool = False, italic: bool = False, strikethrough: bool = False,
-                 underline: bool = False, code: bool = False, color: str = 'default'):
+
+    def __init__(
+        self,
+        text: str = "",
+        bold: bool = False,
+        italic: bool = False,
+        strikethrough: bool = False,
+        underline: bool = False,
+        code: bool = False,
+        color: str = "default",
+    ):
         super().__init__()
         self.__text = PlainText(text=text)
-        self.__annotations = Annotations(bold=bold, italic=italic, strikethrough=strikethrough,
-                                         underline=underline, code=code, color=color)
-
-    @property
-    def data(self):
-        pairs = [
-            *self.__text.items(),
-            *self.__annotations.items()
-        ]
-        return dict(pairs)
-
-    @data.setter
-    def data(self, value):
-        pass
+        self.__annotations = Annotations(
+            bold=bold,
+            italic=italic,
+            strikethrough=strikethrough,
+            underline=underline,
+            code=code,
+            color=color,
+        )
+        self.update(self.__text)
+        self.update(self.__annotations)
 
     @property
     def text(self):
@@ -317,7 +336,7 @@ class Text(BaseProps):
         self.__annotations.bold = value
 
     @bold.deleter
-    def bold(self) -> NoReturn:
+    def bold(self) -> None:
         del self.__annotations.bold
 
     @property
@@ -329,7 +348,7 @@ class Text(BaseProps):
         self.__annotations.italic = value
 
     @italic.deleter
-    def italic(self) -> NoReturn:
+    def italic(self) -> None:
         del self.__annotations.italic
 
     @property
@@ -341,7 +360,7 @@ class Text(BaseProps):
         self.__annotations.strikethrough = value
 
     @strikethrough.deleter
-    def strikethrough(self) -> NoReturn:
+    def strikethrough(self) -> None:
         del self.__annotations.strikethrough
 
     @property
@@ -353,7 +372,7 @@ class Text(BaseProps):
         self.__annotations.underline = value
 
     @underline.deleter
-    def underline(self) -> NoReturn:
+    def underline(self) -> None:
         del self.__annotations.underline
 
     @property
@@ -365,7 +384,7 @@ class Text(BaseProps):
         self.__annotations.code = value
 
     @code.deleter
-    def code(self) -> NoReturn:
+    def code(self) -> None:
         del self.__annotations.code
 
     @property

@@ -1,10 +1,14 @@
 from collections import UserDict
 import json
-from typing import Any, Dict, Final, List, NoReturn, Tuple, Union, Optional
-try:
+from typing import Any, Dict, Final, List, Tuple, Union, Optional
+
+import sys
+
+if sys.version_info >= (3, 8):
     from typing import Literal
-except:
+else:
     from typing_extensions import Literal
+
 import os
 import warnings
 
@@ -19,6 +23,7 @@ PAGE_COVER = Dict[str, Any]
 
 # Type Hint
 UrlLike = str
+
 
 class NotionClient:
     """
@@ -40,7 +45,8 @@ class NotionClient:
     get_child_blocks(block_id: str, start_cursor: Optional[str])
         Get child blocks with block_id
     """
-    def __init__(self, *, key: Optional[str] = None, name: str = 'NOTION_KEY'):
+
+    def __init__(self, *, key: Optional[str] = None, name: str = "NOTION_KEY"):
         """
         Parameters
         ----------
@@ -54,14 +60,16 @@ class NotionClient:
         if key is None:
             key = os.environ.get(name)
             if key is None:
-                raise ValueError(f'if `key` is None, global environment must have `{name}`.')
-        
+                raise ValueError(
+                    f"if `key` is None, global environment must have `{name}`."
+                )
+
         self.__key: Final[str] = key
-        self.__version: Final[str] = '2021-08-16'
+        self.__version: Final[str] = "2021-08-16"
         self.__headers: Final[Dict[str, str]] = {
-            'Notion-Version': self.version,
-            'Content-Type': 'application/json',
-            'Authorization': f'Bearer {self.key}',
+            "Notion-Version": self.version,
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.key}",
         }
 
     # Properties
@@ -88,15 +96,17 @@ class NotionClient:
 
     # Special Methods
     def __str__(self) -> str:
-        mask = '*' * len(self.key)
-        return f'NotionClient\n::   key   :: {mask}\n:: version :: {self.version}\n'
+        mask = "*" * len(self.key)
+        return f"NotionClient\n::   key   :: {mask}\n:: version :: {self.version}\n"
 
     def __repr__(self) -> str:
-        mask = '*' * len(self.key)
-        return f'NotionClient\n::   key   :: {mask}\n:: version :: {self.version}\n'
+        mask = "*" * len(self.key)
+        return f"NotionClient\n::   key   :: {mask}\n:: version :: {self.version}\n"
 
     # Private Methods
-    def _parse_id(self, urllike: UrlLike, type_: Literal['page', 'database', 'block'] = 'page') -> str:
+    def _parse_id(
+        self, urllike: UrlLike, type_: Literal["page", "database", "block"] = "page"
+    ) -> str:
         """
         Parameters
         ----------
@@ -107,19 +117,21 @@ class NotionClient:
         str
             ID from URL format
         """
-        id_ = urllike.split('/')[-1]  # retrieve the last string
-        if type_ in ('page'):
-            id_ = id_.split('-')[-1]  # remove string like title
-        elif type_ in ('database'):
-            id_ = id_.split('?')[0]  # remove params of url
-        elif type_ in ('block'):
-            id_ = id_.split('#')[-1]  # remove page link
+        id_ = urllike.split("/")[-1]  # retrieve the last string
+        if type_ in ("page"):
+            id_ = id_.split("-")[-1]  # remove string like title
+        elif type_ in ("database"):
+            id_ = id_.split("?")[0]  # remove params of url
+        elif type_ in ("block"):
+            id_ = id_.split("#")[-1]  # remove page link
         else:
-            raise ValueError('type_ must be `page` or `database` or `block`')
+            raise ValueError("type_ must be `page` or `database` or `block`")
         return id_
 
     # Pages
-    def get_page(self, *, page_id: Union[str, UrlLike]) -> Tuple[int, Dict[str, Any]]:  # get a page
+    def get_page(
+        self, *, page_id: Union[str, UrlLike]
+    ) -> Tuple[int, Dict[str, Any]]:  # get a page
         """
         Get a page with page_id
 
@@ -134,13 +146,21 @@ class NotionClient:
             This returns status_code and response of dictionary
         """
         page_id = self._parse_id(page_id)
-        res = requests.get(f'https://api.notion.com/v1/pages/{page_id}',
-                           headers=self.headers)
+        res = requests.get(
+            f"https://api.notion.com/v1/pages/{page_id}", headers=self.headers
+        )
         return res.status_code, res.json()
 
-    def create_page(self, *, parent_id: Optional[Union[str, UrlLike]], parent_type: Literal['database', 'page'],
-                    properties: Title, children: Optional[List[BLOCK_OBJECT]] = None, icon: Optional[PAGE_ICON] = None,
-                    cover: Optional[PAGE_COVER] = None) -> Tuple[int, Dict[str, Any]]:  # create a page
+    def create_page(
+        self,
+        *,
+        parent_id: Union[str, UrlLike],
+        parent_type: Literal["database", "page"],
+        properties: Title,
+        children: Optional[List[BLOCK_OBJECT]] = None,
+        icon: Optional[PAGE_ICON] = None,
+        cover: Optional[PAGE_COVER] = None,
+    ) -> Tuple[int, Dict[str, Any]]:  # create a page
         """
         Create a page with page_id
 
@@ -167,24 +187,32 @@ class NotionClient:
 
         .. note:: Implement children, icon, cover
         """
-        if parent_type not in ('database', 'page'):  # parent_type must be `database` or `page`
-            raise ValueError('`parent_type` must be database or page')
+        if parent_type not in (
+            "database",
+            "page",
+        ):  # parent_type must be `database` or `page`
+            raise ValueError("`parent_type` must be database or page")
         parent_id = self._parse_id(parent_id, type_=parent_type)  # parse ID from URL
-        parent_type = f'{parent_type}_id'
-                
+        parent_type = f"{parent_type}_id"
+
         # set params
         body = {
-            'parent': {
+            "parent": {
                 parent_type: parent_id,
             },
-            'properties': properties.json() if isinstance(properties, (UserDict, Title)) else properties,  # if props class, cast to json
-            'children': children if children is not None else [],
-            'icon': icon,
-            'cover': cover,
+            "properties": properties.json()
+            if isinstance(properties, (UserDict, Title))
+            else properties,  # if props class, cast to json
+            "children": children if children is not None else [],
+            "icon": icon,
+            "cover": cover,
         }
         # create a page
-        res = requests.post(f'https://api.notion.com/v1/pages/',
-                           headers=self.headers, data=json.dumps(body))
+        res = requests.post(
+            "https://api.notion.com/v1/pages/",
+            headers=self.headers,
+            data=json.dumps(body),
+        )
 
         return res.status_code, res.json()
 
@@ -203,13 +231,19 @@ class NotionClient:
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
         """
-        block_id = self._parse_id(block_id, type_='block')
-        res = requests.get(f'https://api.notion.com/v1/blocks/{block_id}',
-                           headers=self.headers)
+        block_id = self._parse_id(block_id, type_="block")
+        res = requests.get(
+            f"https://api.notion.com/v1/blocks/{block_id}", headers=self.headers
+        )
         return res.status_code, res.json()
 
-    def get_block_children(self, *, block_id: Union[str, UrlLike], start_cursor: Optional[str] = None,
-                         page_size: int = 100) -> Tuple[int, Dict[str, Any]]:
+    def get_block_children(
+        self,
+        *,
+        block_id: Union[str, UrlLike],
+        start_cursor: Optional[str] = None,
+        page_size: int = 100,
+    ) -> Tuple[int, Dict[str, Any]]:
         """
         Get child blocks with block_id
 
@@ -233,16 +267,23 @@ class NotionClient:
             if page_size is 0 or less than 0
         """
         if page_size <= 0:  # 1 <= page_size <= 100
-            raise ValueError('page_size must be more than 0')
+            raise ValueError("page_size must be more than 0")
         elif page_size > 100:  # 1 <= page_size <= 100
             page_size = 100
-            warnings.warn('page_size must be up to 100, page_size is set to 100', UserWarning)
-        
-        block_id = self._parse_id(block_id, type_='block')  # parse block_id from url-like
+            warnings.warn(
+                "page_size must be up to 100, page_size is set to 100", UserWarning
+            )
+
+        block_id = self._parse_id(
+            block_id, type_="block"
+        )  # parse block_id from url-like
         params = {
-            'page_size': page_size,  # max size of page_size
-            'start_cursor': start_cursor,  # start_cursor
+            "page_size": page_size,  # max size of page_size
+            "start_cursor": start_cursor,  # start_cursor
         }
-        res = requests.get(f'https://api.notion.com/v1/blocks/{block_id}/children',
-                           headers=self.headers, params=params)
+        res = requests.get(
+            f"https://api.notion.com/v1/blocks/{block_id}/children",
+            headers=self.headers,
+            params=params,
+        )
         return res.status_code, res.json()
