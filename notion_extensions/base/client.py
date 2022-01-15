@@ -118,7 +118,7 @@ class NotionClient:
         if type_ in ("page"):
             id_ = id_.split("-")[-1]  # remove string like title
         elif type_ in ("database"):
-            id_ = id_.split("?")[0]  # remove params of url
+            id_ = id_.split("?")[0]  # remove body of url
         elif type_ in ("block"):
             id_ = id_.split("#")[-1]  # remove page link
         else:
@@ -192,7 +192,7 @@ class NotionClient:
         parent_id = self._parse_id(parent_id, type_=parent_type)  # parse ID from URL
         parent_type = f"{parent_type}_id"
 
-        # set params
+        # set body
         body = {
             "parent": {
                 parent_type: parent_id,
@@ -245,7 +245,7 @@ class NotionClient:
         """
         page_id = self._parse_id(page_id, type_="page")  # parse ID from URL
 
-        # set params
+        # set body
         body = {
             "properties": properties,
             "archived": archived,
@@ -282,7 +282,7 @@ class NotionClient:
         """
         page_id = self._parse_id(page_id, type_="page")  # parse ID from URL
 
-        # set params
+        # set body
         body = {
             "archived": True,
         }
@@ -296,7 +296,11 @@ class NotionClient:
         return res.status_code, res.json()
 
     # Blocks
-    def get_block(self, *, block_id: Union[str, UrlLike]) -> Tuple[int, Dict[str, Any]]:
+    def get_block(
+        self,
+        *,
+        block_id: Union[str, UrlLike],
+    ) -> Tuple[int, Dict[str, Any]]:
         """
         Get a block with block_id
 
@@ -313,6 +317,55 @@ class NotionClient:
         block_id = self._parse_id(block_id, type_="block")
         res = requests.get(
             f"https://api.notion.com/v1/blocks/{block_id}", headers=self.headers
+        )
+        return res.status_code, res.json()
+
+    def update_block(
+        self,
+        *,
+        block_id: Union[str, UrlLike],
+        type_: Optional[Dict] = None,
+        archived: bool = False,
+    ) -> Tuple[int, Dict[str, Any]]:
+        """
+        Updates the content for the specified block_id based on the block type.
+        Supported fields based on the block object type
+        (see [Block object](https://developers.notion.com/reference-link/block#block-type-object) for available fields
+        and the expected input for each field)
+
+        Parameters
+        ----------
+        block_id : str or UrlLike
+            Identifier for a Notion block. ID or URL
+        type_ : Dict, optional
+            The block object type value with the properties to be updated.
+            Currently only `text` (for supported block types) and `checked` (for to_do blocks) fields can be updated
+        archived : bool, default=False
+            Set to true to archive (delete) a block. Set to false to un-archive (restore) a block
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+
+        See Also
+        --------
+        [Block object](https://developers.notion.com/reference-link/block#block-type-object)
+        """
+        block_id = self._parse_id(block_id, type_="block")
+        body = {}
+        if type_ is not None:
+            body.update(type_)
+        body.update(
+            {
+                "archived": archived,
+            }
+        )
+
+        res = requests.patch(
+            f"https://api.notion.com/v1/blocks/{block_id}",
+            headers=self.headers,
+            data=json.dumps(body),
         )
         return res.status_code, res.json()
 
@@ -357,14 +410,14 @@ class NotionClient:
         block_id = self._parse_id(
             block_id, type_="block"
         )  # parse block_id from url-like
-        params = {
+        body = {
             "page_size": page_size,  # max size of page_size
             "start_cursor": start_cursor,  # start_cursor
         }
         res = requests.get(
             f"https://api.notion.com/v1/blocks/{block_id}/children",
             headers=self.headers,
-            params=params,
+            params=body,
         )
         return res.status_code, res.json()
 
