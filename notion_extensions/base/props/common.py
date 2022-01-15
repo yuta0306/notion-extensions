@@ -440,15 +440,18 @@ class RichText(BaseProps):
         ],
     }
 
-    def __init__(self, *text: Text):
+    def __init__(self, key: str = "rich_text", *text: Text):
         """
         Parameters
         ----------
-        text: *Text
+        key : str
+            Property key of RichText
+        *text: Text
             Texts of RichText
         """
         super().__init__()
         self.__texts: list
+        self.__key = key
         if len(text) > 0:  # if  are given
             self.__texts = list(text)
         else:
@@ -457,9 +460,11 @@ class RichText(BaseProps):
             ]
         self.update(
             {
-                "rich_text": self.__texts,
+                key: self.__texts,
             }
         )
+        if key != "rich_text":
+            super(BaseProps, self).pop("rich_text")
 
     def __getitem__(self, index: Union[int, str]) -> Text:
         if isinstance(index, int):
@@ -476,6 +481,10 @@ class RichText(BaseProps):
     def __iadd__(self, other: Union[Text, List[Text]]):
         return self.__add__(other)
 
+    @property
+    def key(self) -> str:
+        return self.__key
+
     def append(self, text: Text) -> None:
         """
         append(text: Text)
@@ -487,7 +496,7 @@ class RichText(BaseProps):
             Text you append to RichText
         """
         self.__texts.append(text)
-        self["rich_text"] = self.__texts
+        self[self.key] = self.__texts
 
     def extend(self, texts: List[Text]) -> None:
         """
@@ -500,7 +509,7 @@ class RichText(BaseProps):
             List of text you append to RichText
         """
         self.__texts.extend(texts)
-        self["rich_text"] = self.__texts
+        self[self.key] = self.__texts
 
     def insert(self, index: int, text: Text) -> None:
         """
@@ -515,7 +524,7 @@ class RichText(BaseProps):
             Text you insert into RichText
         """
         self.__texts.insert(index, text)
-        self["rich_text"] = self.__texts
+        self[self.key] = self.__texts
 
     def pop(self, index=None):
         """
@@ -528,5 +537,5 @@ class RichText(BaseProps):
             Text you pop from RichText
         """
         item = self.__texts.pop(index)
-        self["rich_text"] = self.__texts
+        self[self.key] = self.__texts
         return item

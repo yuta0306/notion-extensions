@@ -3,6 +3,10 @@ import warnings
 
 from .common import BaseProps, PlainText
 
+__all__ = [
+    "Title",
+]
+
 
 class Title(BaseProps):
     """

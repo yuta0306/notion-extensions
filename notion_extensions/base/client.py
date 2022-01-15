@@ -351,6 +351,9 @@ class NotionClient:
         See Also
         --------
         [Block object](https://developers.notion.com/reference-link/block#block-type-object)
+
+        .. note:: A block's children CANNOT be directly updated with this endpoint.
+                    Instead use `append_block_children` to add children
         """
         block_id = self._parse_id(block_id, type_="block")
         body = {}
