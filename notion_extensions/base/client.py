@@ -262,6 +262,39 @@ class NotionClient:
 
         return res.status_code, res.json()
 
+    def delete_page(
+        self,
+        *,
+        page_id: Union[str, UrlLike],
+    ) -> Tuple[int, Dict[str, Any]]:  # create a page
+        """
+        Delete a page with page_id
+
+        Parameters
+        ----------
+        page_id : str or UrlLike, optional
+            Identifier for a Notion page. ID or URL
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+        """
+        page_id = self._parse_id(page_id, type_="page")  # parse ID from URL
+
+        # set params
+        body = {
+            "archived": True,
+        }
+        # delete a page
+        res = requests.patch(
+            f"https://api.notion.com/v1/pages/{page_id}",
+            headers=self.headers,
+            data=json.dumps(body),
+        )
+
+        return res.status_code, res.json()
+
     # Blocks
     def get_block(self, *, block_id: Union[str, UrlLike]) -> Tuple[int, Dict[str, Any]]:
         """

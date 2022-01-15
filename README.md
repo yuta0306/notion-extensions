@@ -17,7 +17,7 @@ Notion API Client and Extensions
             - [ ] archive (delete) or un-archive (restore)
             - [ ] update icon for page
             - [ ] update cover for page
-        - [ ] ~~Archive (delete) a page~~
+        - [x] ~~Archive (delete) a page~~
         - [ ] Retrieve a page propoerty item
             - [ ] ...
     - [ ] Databeses
