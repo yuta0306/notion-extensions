@@ -1,20 +1,17 @@
-from collections import UserDict
 import json
 from typing import Any, Dict, Final, List, Tuple, Union, Optional
-
 import sys
-
-if sys.version_info >= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
-
 import os
 import warnings
 
 import requests
 
 from .props.page import Title
+
+if sys.version_info >= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 PAGE_PROPERTY = Dict[str, Any]
 BLOCK_OBJECT = Dict[str, Any]
@@ -200,9 +197,7 @@ class NotionClient:
             "parent": {
                 parent_type: parent_id,
             },
-            "properties": properties.json()
-            if isinstance(properties, (UserDict, Title))
-            else properties,  # if props class, cast to json
+            "properties": properties,
             "children": children if children is not None else [],
             "icon": icon,
             "cover": cover,

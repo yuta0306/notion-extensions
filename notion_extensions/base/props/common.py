@@ -1,4 +1,6 @@
+import copy
 from typing import Any, Dict, List, Union
+import warnings
 
 
 class BaseProps(dict):
@@ -8,13 +10,9 @@ class BaseProps(dict):
         super().__init__()
         self.update(self.TEMPLATE)
 
-    def __setitem__(self, key: str, item: Any):
-        """
-        Raises
-        ------
-        NotImplementedError
-        """
-        raise NotImplementedError
+    def __setitem__(self, key: Any, item: Any):
+        item = copy.deepcopy(item)
+        super().__setitem__(key, item)
 
     def __delitem__(self, key):
         """
@@ -25,6 +23,7 @@ class BaseProps(dict):
         raise NotImplementedError
 
     def json(self) -> dict:
+        warnings.warn("deprecated", FutureWarning)
         json = super().copy()
         return json
 
@@ -60,12 +59,14 @@ class BaseProps(dict):
 
     def update(self, __mapping, **kwargs):
         """
-        Raises
-        ------
-        NotImplementedError
+        update(__mapping: Dict[Any, Any], **kwargs)
+
+        Returns
+        -------
+        None
         """
         for key, value in __mapping.items():
-            super().__setitem__(key, value)
+            self.__setitem__(key, value)
 
     def setdefault(self, __key, __default):
         """
@@ -432,16 +433,17 @@ class RichText(BaseProps):
         ],
     }
 
-    def __init__(self, *texts: Text):
+    def __init__(self, *text: Text):
         """
         Parameters
         ----------
-            texts: Text
-                Texts of RichText
+        text: *Text
+            Texts of RichText
         """
         super().__init__()
-        if len(texts) > 0:  # if texts are given
-            self.__texts = list(texts)
+        self.__texts: list
+        if len(text) > 0:  # if  are given
+            self.__texts = list(text)
         else:
             self.__texts = [
                 Text(),
@@ -452,17 +454,62 @@ class RichText(BaseProps):
             }
         )
 
-    def __getitem__(self, index: int) -> Text:
-        return self.__texts[index]
+    def __getitem__(self, index: Union[int, str]) -> Text:
+        if isinstance(index, int):
+            return self.__texts[index]
+        return super().__getitem__(index)
 
     def append(self, text: Text) -> None:
+        """
+        append(text: Text)
+            Append Text to existing list of Text
+
+        Parameters
+        ----------
+        text : Text
+            Text you append to RichText
+        """
         self.__texts.append(text)
+        self["rich_text"] = self.__texts
 
     def extend(self, texts: List[Text]) -> None:
+        """
+        extens(texts: Text)
+            Append Text to existing list of Text
+
+        Parameters
+        ----------
+        text : list of Text
+            List of text you append to RichText
+        """
         self.__texts.extend(texts)
+        self["rich_text"] = self.__texts
 
     def insert(self, index: int, text: Text) -> None:
+        """
+        insert(index: int, text: Text)
+            Append Text to existing list of Text
+
+        Parameters
+        ----------
+        index : int
+            Index you insert Text into
+        text : Text
+            Text you insert into RichText
+        """
         self.__texts.insert(index, text)
+        self["rich_text"] = self.__texts
 
     def pop(self, index=None):
-        return self.__texts.pop(index)
+        """
+        pop(text: Text)
+            Pop Text to existing list of Text
+
+        Parameters
+        ----------
+        index : int, default=None
+            Text you pop from RichText
+        """
+        item = self.__texts.pop(index)
+        self["rich_text"] = self.__texts
+        return item
