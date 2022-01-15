@@ -154,7 +154,7 @@ class NotionClient:
         parent_id: Union[str, UrlLike],
         parent_type: Literal["database", "page"],
         properties: Title,
-        children: Optional[List[BLOCK_OBJECT]] = None,
+        children: Optional[List[Dict[Any, Any]]] = None,
         icon: Optional[PAGE_ICON] = None,
         cover: Optional[PAGE_COVER] = None,
     ) -> Tuple[int, Dict[str, Any]]:  # create a page
@@ -171,7 +171,7 @@ class NotionClient:
         parent_id : str or UrlLike, optional
             ID of the parent database or page, or URL of the parent database or page
         children : List of BlockObject, optional
-            List of a block object
+            Page content for the new page as an array of block objects
         icon : Icon, optional
             Icon of a page
         cover : Cover, optional
@@ -211,6 +211,57 @@ class NotionClient:
 
         return res.status_code, res.json()
 
+    def update_page(
+        self,
+        *,
+        page_id: Union[str, UrlLike],
+        properties: Dict[Any, Any],
+        archived: bool = False,
+        icon: Optional[PAGE_ICON] = None,
+        cover: Optional[PAGE_COVER] = None,
+    ) -> Tuple[int, Dict[str, Any]]:  # create a page
+        """
+        Update a page with page_id
+
+        Parameters
+        ----------
+        page_id : str or UrlLike, optional
+            ID of the parent page, or URL of the parent page
+        properties : Dict of Any
+            properties of the page you will update
+        archived : bool, default=False
+            Set to True to archive (delete) a page. Set to False to un-archive (restore) a page
+        icon : Icon, optional
+            Icon of a page
+        cover : Cover, optional
+            Cover of a page
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+
+        .. note:: Implement children, icon, cover
+        """
+        page_id = self._parse_id(page_id, type_="page")  # parse ID from URL
+
+        # set params
+        body = {
+            "properties": properties,
+            "archived": archived,
+            "icon": icon,
+            "cover": cover,
+        }
+        # create a page
+        raise NotImplementedError
+        res = requests.patch(
+            f"https://api.notion.com/v1/pages/{page_id}",
+            headers=self.headers,
+            data=json.dumps(body),
+        )
+
+        return res.status_code, res.json()
+
     # Blocks
     def get_block(self, *, block_id: Union[str, UrlLike]) -> Tuple[int, Dict[str, Any]]:
         """
@@ -219,7 +270,7 @@ class NotionClient:
         Parameters
         ----------
         block_id : str or UrlLike
-            ID or URL of the block you will get
+            Identifier for a Notion block. ID or URL
 
         Returns
         -------
@@ -245,11 +296,12 @@ class NotionClient:
         Parameters
         ----------
         block_id : str or UrlLike
-            ID or URL of the block you can get
+            Identifier for a block. ID or URL
         start_cursor : str, optional
-            Cursor of pagination for getting child blocks
+            If supplied, this endpoint will return a page of results starting after the cursor provided.
+            If not supplied, this endpoint will return the first page of results
         page_size : int, default=100
-            Page size of a response, maximum size is 100
+            The number of items from the full list desired in the response. Maximum: 100
 
         Returns
         -------
@@ -280,5 +332,28 @@ class NotionClient:
             f"https://api.notion.com/v1/blocks/{block_id}/children",
             headers=self.headers,
             params=params,
+        )
+        return res.status_code, res.json()
+
+    def delete_block(
+        self, *, block_id: Union[str, UrlLike]
+    ) -> Tuple[int, Dict[str, Any]]:
+        """
+        Sets a Block object, including page blocks, to archived: true using the ID or URL specified.
+        To restore the block with the API, use `update_block` or `update_page` respectively.
+
+        Parameters
+        ----------
+        block_id : str or UrlLike
+            Identifier for a Notion block. ID or URL
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+        """
+        block_id = self._parse_id(block_id, type_="block")
+        res = requests.delete(
+            f"https://api.notion.com/v1/blocks/{block_id}", headers=self.headers
         )
         return res.status_code, res.json()
