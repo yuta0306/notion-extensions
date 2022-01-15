@@ -44,8 +44,14 @@ Notion API Client and Extensions
 
 - [ ] Property Values Object Classes??
      - [ ] page
+        - [x] Title
      - [ ] database
      - [ ] block
+        - [x] Children
+        - [x] Paragraph
+        - [x] Heading1
+        - [x] Heading2
+        - [x] Heading3
      - [ ] user
      - [ ] common
         - [x] BaseProp
