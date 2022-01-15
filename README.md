@@ -34,7 +34,7 @@ Notion API Client and Extensions
             - [ ] update block type `checked` (`to_do`)
         - [x] Retrieve block children
         - [ ] Append block children
-        - [ ] Delete a block
+        - [x] Delete a block
     - [ ] Users
         - [ ] Retrieve a user
         - [ ] List all users
@@ -52,7 +52,7 @@ Notion API Client and Extensions
         - [x] Annotations
         - [x] PlainText
         - [x] Text
-        - [ ] RichText
+        - [x] RichText
         - [ ] Number
         - [ ] Select
         - [ ] MultiSelect
