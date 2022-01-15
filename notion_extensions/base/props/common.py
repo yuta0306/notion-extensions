@@ -421,26 +421,15 @@ class RichText(BaseProps):
         Clear data of text
     """
 
-    TEMPLATE: Dict[str, List[Dict[str, Union[str, dict]]]] = {
-        "rich_text": [
-            {
-                "type": "text",
-                "text": {
-                    "content": "",
-                },
-                "annotations": {
-                    "bold": False,
-                    "italic": False,
-                    "strikethrough": False,
-                    "underline": False,
-                    "code": False,
-                    "color": "default",
-                },
-            },
-        ],
+    TEMPLATE: Dict[str, List[Text]] = {
+        "rich_text": [],
     }
 
-    def __init__(self, key: str = "rich_text", *text: Text):
+    def __init__(
+        self,
+        *text: Text,
+        key: str = "rich_text",
+    ):
         """
         Parameters
         ----------
@@ -450,14 +439,8 @@ class RichText(BaseProps):
             Texts of RichText
         """
         super().__init__()
-        self.__texts: list
         self.__key = key
-        if len(text) > 0:  # if  are given
-            self.__texts = list(text)
-        else:
-            self.__texts = [
-                Text(),
-            ]
+        self.__texts = list(text)
         self.update(
             {
                 key: self.__texts,

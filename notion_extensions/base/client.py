@@ -6,6 +6,8 @@ import warnings
 
 import requests
 
+from notion_extensions.base.props.block import Children
+
 from .props.page import Title
 
 if sys.version_info >= (3, 8):
@@ -253,7 +255,6 @@ class NotionClient:
             "cover": cover,
         }
         # create a page
-        raise NotImplementedError
         res = requests.patch(
             f"https://api.notion.com/v1/pages/{page_id}",
             headers=self.headers,
@@ -421,6 +422,43 @@ class NotionClient:
             f"https://api.notion.com/v1/blocks/{block_id}/children",
             headers=self.headers,
             params=body,
+        )
+        return res.status_code, res.json()
+
+    def append_block_children(
+        self,
+        *,
+        block_id: Union[str, UrlLike],
+        children: Children,
+    ) -> Tuple[int, Dict[str, Any]]:
+        """
+        Creates and appends new children blocks to the parent block_id specified.
+        Returns a paginated list of newly created first level children block objects.
+
+        Parameters
+        ----------
+        block_id : str or UrlLike
+            Identifier for a block. ID or URL
+        children : list of Any
+            Child content to append to a container block as an array of block objects
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+
+        Raises
+        ------
+        ValueError
+            if page_size is 0 or less than 0
+        """
+        # parse block_id from url-like
+        block_id = self._parse_id(block_id, type_="block")
+
+        res = requests.patch(
+            f"https://api.notion.com/v1/blocks/{block_id}/children",
+            headers=self.headers,
+            data=json.dumps(children),
         )
         return res.status_code, res.json()
 

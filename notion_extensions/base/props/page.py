@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Text
 import warnings
 
 from .common import BaseProps, PlainText
@@ -33,15 +33,8 @@ class Title(BaseProps):
         Return this class as dictionary
     """
 
-    TEMPLATE: Dict[str, List[Dict[str, Union[str, Dict]]]] = {
-        "title": [
-            {
-                "type": "text",
-                "text": {
-                    "content": "",
-                },
-            },
-        ],
+    TEMPLATE: Dict[str, List[Text]] = {
+        "title": [],
     }
 
     def __init__(self, title: str = "", id_: str = "title", in_page: bool = True):
