@@ -231,12 +231,19 @@ class PlainText(BaseProps):
         super().__init__()
         self.text = text
 
+    def __add__(self, other: str):
+        self.text = self.text + other
+        return self
+
+    def __iadd__(self, other: str):
+        return self.__add__(other)
+
     @property
-    def text(self):
+    def text(self) -> str:
         return self["text"]["content"]
 
     @text.setter
-    def text(self, value: str):
+    def text(self, value: str) -> None:
         self["text"]["content"] = value
 
     @text.deleter
@@ -458,6 +465,16 @@ class RichText(BaseProps):
         if isinstance(index, int):
             return self.__texts[index]
         return super().__getitem__(index)
+
+    def __add__(self, other: Union[Text, List[Text]]):
+        if isinstance(other, list):
+            self.extend(other)
+            return self
+        self.append(other)
+        return self
+
+    def __iadd__(self, other: Union[Text, List[Text]]):
+        return self.__add__(other)
 
     def append(self, text: Text) -> None:
         """
