@@ -31,6 +31,7 @@ __all__ = [
     "Code",
     "Embed",
     "Image",
+    "Video",
 ]
 
 BLOCK_TYPES = Literal[
@@ -1460,7 +1461,7 @@ class Image(Block):
     Attributes
     ----------
     url : str
-        Link to website the embed block will display
+        Link to website the image block will display
     type_ : 'external' or 'file', default='external'
         Type of this file object. Possible values are: 'external', 'file'
 
@@ -1492,7 +1493,7 @@ class Image(Block):
         Parameters
         ----------
         url : str, optional
-            Link to website the embed block will display
+            Link to website the image block will display
         type_ : 'external' or 'file', default='external'
             Type of this file object. Possible values are: 'external', 'file'
         file : FileObject, optional
@@ -1526,6 +1527,88 @@ class Image(Block):
     def type_(self) -> None:
         self.__file.type_ = "external"
         self["image"] = self.__file
+
+    @property
+    def url(self) -> str:
+        return self.__file.url
+
+    @url.setter
+    def url(self, value: str) -> None:
+        self.__file.url = value
+
+    @url.deleter
+    def url(self) -> None:
+        self.__file.url = ""
+
+
+class Video(Block):
+    """
+     Video
+     Video property values of block
+
+    Attributes
+    ----------
+    url : str
+        Link to website the video block will display
+    type_ : 'external' or 'file', default='external'
+        Type of this file object. Possible values are: 'external', 'file'
+
+    Methods
+    -------
+    clear()
+        Clear data of title
+    json()
+        Return this class as dictionary
+    """
+
+    TEMPLATE: Dict[str, Union[str, Dict]] = {
+        "type": "video",
+        "video": {
+            "type": "external",
+            "external": {
+                "url": "",
+            },
+        },
+    }
+
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        type_: Literal["external", "file"] = "external",
+        file: Optional[FileObject] = None,
+    ):
+        """
+        Parameters
+        ----------
+        url : str, optional
+            Link to website the video block will display
+        type_ : 'external' or 'file', default='external'
+            Type of this file object. Possible values are: 'external', 'file'
+        file : FileObject, optional
+            FileObject
+        """
+        super().__init__()
+        if url is None and file is None:
+            raise ValueError("Either url or file should be not None")
+        elif file is not None:
+            self.__file = file
+        elif url is not None:
+            self.__file = FileObject(type_=type_, url=url)
+        self["video"] = self.__file
+
+    @property
+    def type_(self) -> str:
+        return self.__file.type_
+
+    @type_.setter
+    def type_(self, value: Literal["external", "file"]) -> None:
+        self.__file.type_ = value
+        self["video"] = self.__file
+
+    @type_.deleter
+    def type_(self) -> None:
+        self.__file.type_ = "external"
+        self["video"] = self.__file
 
     @property
     def url(self) -> str:
