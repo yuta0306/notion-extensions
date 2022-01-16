@@ -1,5 +1,5 @@
 import copy
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 import warnings
 
 
@@ -522,3 +522,102 @@ class RichText(BaseProps):
         item = self.__texts.pop(index)
         self[self.key] = self.__texts
         return item
+
+
+class Emoji(BaseProps):
+    """
+    Emoji
+    Emoji property values
+
+    Attributes
+    ----------
+    emoji : str
+        Emoji
+
+    Methods
+    -------
+    clear()
+        Clear data of emoji
+    """
+
+    TEMPLATE: Dict[str, str] = {
+        "type": "emoji",
+        "emoji": "",
+    }
+
+    def __init__(self, emoji: str):
+        """
+        Parameters
+        ----------
+        emoji : str
+            Emoji
+        """
+        super().__init__()
+        self["emoji"] = emoji
+
+    @property
+    def emoji(self) -> str:
+        return self["emoji"]
+
+    @emoji.setter
+    def emoji(self, value: str) -> None:
+        self["emoji"] = value
+
+    @emoji.deleter
+    def emoji(self) -> None:
+        self["emoji"] = ""
+
+
+class File(BaseProps):
+    def __init__(self):
+        super().__init__()
+        raise NotImplementedError
+
+
+class Icon(BaseProps):
+    """
+    Icon
+    Icon property values
+
+    Attributes
+    ----------
+    emoji : Emoji
+        Emoji Object
+
+    Methods
+    -------
+    clear()
+        Clear data of emoji
+
+    .. note:: file object is not be implemented yet
+    """
+
+    TEMPLATE: Dict[str, Dict] = {
+        "icon": {},
+    }
+
+    def __init__(self, emoji: Emoji, file: Optional[File] = None):
+        """
+        Parameters
+        ----------
+        emoji : Emoji
+            Emoji Object
+        file : File, optional
+            File Object
+
+        .. note:: file object is not be implemented yet
+        """
+        super().__init__()
+        self["icon"] = emoji
+
+    @property
+    def emoji(self) -> Emoji:
+        return self["icon"]
+
+    @emoji.setter
+    def emoji(self, value: Emoji) -> None:
+        self["icon"] = value
+
+    @emoji.deleter
+    def emoji(self) -> None:
+        self["icon"] = {}
