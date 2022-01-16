@@ -66,7 +66,7 @@ Notion API Client and Extensions
         - [ ] ~~ChildPage~~
         - [ ] ~~ChildDatabase~~
         - [x] Embed
-        - [ ] Image
+        - [x] Image
         - [ ] Video
         - [ ] File
         - [ ] Pdf

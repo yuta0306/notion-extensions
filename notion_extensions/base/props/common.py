@@ -1,5 +1,5 @@
 import copy
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Union
 import warnings
 
 
@@ -568,10 +568,72 @@ class Emoji(BaseProps):
         self["emoji"] = ""
 
 
-class File(BaseProps):
-    def __init__(self):
+class FileObject(BaseProps):
+    """
+    FileObject
+    FileObject property values
+
+    Attributes
+    ----------
+    type_ : 'external' or 'file'
+        Type of this file object. Possible values are: 'external', 'file'.
+    url : str
+        Link to the externally hosted content if the file is externally hosted.
+        Authenticated S3 URL to the file if the file is hosted to Notion.
+        The file URL will be valid for 1 hour but updated links can be requested if required
+
+    Methods
+    -------
+    clear()
+        Clear data of emoji
+
+    See Also
+    --------
+    [File Object](https://developers.notion.com/reference/file-object)
+    """
+
+    TEMPLATE: Dict[str, Union[str, Dict]] = {
+        "type": "external",
+    }
+
+    def __init__(self, type_: Literal["external", "file"], url: str):
         super().__init__()
-        raise NotImplementedError
+        if type_ not in ("external", "file"):
+            raise ValueError("type_ must be `external` or `file`")
+        self["type"] = type_
+        self[type_] = {
+            "url": url,
+        }
+
+    @property
+    def type_(self) -> str:
+        return self["type"]
+
+    @type_.setter
+    def type_(self, value: Literal["external", "file"]) -> None:
+        if value not in ("external", "file"):
+            raise ValueError("value must be `external` or `file`")
+        type_ = self["type"]
+        if type_ != value:
+            self.update(
+                {
+                    "type": value,
+                    value: self[type_],
+                }
+            )
+            super(BaseProps, self).pop(type_)
+
+    @property
+    def url(self) -> str:
+        return self[self.type_]["url"]
+
+    @url.setter
+    def url(self, value: str) -> None:
+        self[self.type_]["url"] = value
+
+    @url.deleter
+    def url(self) -> None:
+        self[self.type_]["url"] = ""
 
 
 class Icon(BaseProps):
@@ -596,7 +658,7 @@ class Icon(BaseProps):
         "icon": {},
     }
 
-    def __init__(self, emoji: Emoji, file: Optional[File] = None):
+    def __init__(self, emoji: Emoji, file: Optional[FileObject] = None):
         """
         Parameters
         ----------
