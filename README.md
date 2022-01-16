@@ -54,6 +54,11 @@ Notion API Client and Extensions
         - [x] Heading2
         - [x] Heading3
         - [x] Callout
+        - [x] Quote
+        - [x] BulletedListItem
+        - [x] BulletedList
+        - [x] NumberedListItem
+        - [x] NumberedList
      - [ ] user
      - [ ] common
         - [x] BaseProp
