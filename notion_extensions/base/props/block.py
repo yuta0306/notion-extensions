@@ -1485,6 +1485,7 @@ class Image(Block):
 
     def __init__(
         self,
+        *caption: Union[Text, RichText],
         url: Optional[str] = None,
         type_: Literal["external", "file"] = "external",
         file: Optional[FileObject] = None,
@@ -1492,6 +1493,8 @@ class Image(Block):
         """
         Parameters
         ----------
+        *caption : Text or RichText
+            Caption of the image block
         url : str, optional
             Link to website the image block will display
         type_ : 'external' or 'file', default='external'
@@ -1500,6 +1503,18 @@ class Image(Block):
             FileObject
         """
         super().__init__()
+        base = []  # Aggregate Texts
+        for t in caption:
+            if isinstance(t, RichText):
+                base.extend(list(t[t.key]))
+            elif isinstance(t, Text):
+                base.append(t)
+            else:
+                raise ValueError(
+                    f"Expected type is `RichText` or `Text`, but {type(t)} is given"
+                )
+        self.__caption = RichText(key="caption", *base)
+
         if url is None and file is None:
             raise ValueError("Either url or file should be not None")
         elif file is not None:
@@ -1513,6 +1528,21 @@ class Image(Block):
                 )
             self.__file = FileObject(type_=type_, url=url)
         self["image"] = self.__file
+        self["image"].update(self.__caption)
+
+    @property
+    def caption(self) -> RichText:
+        return self.__caption
+
+    @caption.setter
+    def caption(self, value: RichText) -> None:
+        self.__caption = value
+        self["image"].update(self.__caption)
+
+    @caption.deleter
+    def caption(self) -> None:
+        self.__caption = RichText()
+        self["image"].update(self.__caption)
 
     @property
     def type_(self) -> str:
@@ -1548,6 +1578,8 @@ class Video(Block):
 
     Attributes
     ----------
+    *caption : Text or RichText
+            Caption of the video block
     url : str
         Link to website the video block will display
     type_ : 'external' or 'file', default='external'
@@ -1573,6 +1605,7 @@ class Video(Block):
 
     def __init__(
         self,
+        *caption: Union[Text, RichText],
         url: Optional[str] = None,
         type_: Literal["external", "file"] = "external",
         file: Optional[FileObject] = None,
@@ -1588,6 +1621,18 @@ class Video(Block):
             FileObject
         """
         super().__init__()
+        base = []  # Aggregate Texts
+        for t in caption:
+            if isinstance(t, RichText):
+                base.extend(list(t[t.key]))
+            elif isinstance(t, Text):
+                base.append(t)
+            else:
+                raise ValueError(
+                    f"Expected type is `RichText` or `Text`, but {type(t)} is given"
+                )
+        self.__caption = RichText(key="caption", *base)
+
         if url is None and file is None:
             raise ValueError("Either url or file should be not None")
         elif file is not None:
@@ -1595,6 +1640,21 @@ class Video(Block):
         elif url is not None:
             self.__file = FileObject(type_=type_, url=url)
         self["video"] = self.__file
+        self["video"].update(self.__caption)
+
+    @property
+    def caption(self) -> RichText:
+        return self.__caption
+
+    @caption.setter
+    def caption(self, value: RichText) -> None:
+        self.__caption = value
+        self["video"].update(self.__caption)
+
+    @caption.deleter
+    def caption(self) -> None:
+        self.__caption = RichText()
+        self["video"].update(self.__caption)
 
     @property
     def type_(self) -> str:
@@ -1723,6 +1783,121 @@ class File(Block):
     def type_(self) -> None:
         self.__file.type_ = "external"
         self["file"] = self.__file
+
+    @property
+    def url(self) -> str:
+        return self.__file.url
+
+    @url.setter
+    def url(self, value: str) -> None:
+        self.__file.url = value
+
+    @url.deleter
+    def url(self) -> None:
+        self.__file.url = ""
+
+
+class Pdf(Block):
+    """
+     Pdf
+     Pdf property values of block
+
+    Attributes
+    ----------
+    url : str
+        Link to website the pdf block will display
+    type_ : 'external' or 'file', default='external'
+        Type of this file object. Possible values are: 'external', 'file'
+    caption : RichText
+        Caption of the pdf block
+
+    Methods
+    -------
+    clear()
+        Clear data of title
+    json()
+        Return this class as dictionary
+    """
+
+    TEMPLATE: Dict[str, Union[str, Dict]] = {
+        "type": "pdf",
+        "pdf": {
+            "type": "external",
+            "external": {
+                "url": "",
+            },
+        },
+    }
+
+    def __init__(
+        self,
+        *caption: Union[Text, RichText],
+        url: Optional[str] = None,
+        type_: Literal["external", "file"] = "external",
+        file: Optional[FileObject] = None,
+    ):
+        """
+        Parameters
+        ----------
+        url : str, optional
+            Link to website the pdf block will display
+        type_ : 'external' or 'file', default='external'
+            Type of this file object. Possible values are: 'external', 'file'
+        file : FileObject, optional
+            FileObject
+        """
+        super().__init__()
+        base = []  # Aggregate Texts
+        for t in caption:
+            if isinstance(t, RichText):
+                base.extend(list(t[t.key]))
+            elif isinstance(t, Text):
+                base.append(t)
+            else:
+                raise ValueError(
+                    f"Expected type is `RichText` or `Text`, but {type(t)} is given"
+                )
+        self.__caption = RichText(key="caption", *base)
+
+        if url is None and file is None:
+            raise ValueError("Either url or file should be not None")
+        elif file is not None:
+            self.__file = file
+        elif url is not None:
+            ext = url.split(".")[-1]
+            if ext not in ("pdf",):
+                raise ValueError("Includes supported image urls, (i.e. ending in .pdf)")
+            self.__file = FileObject(type_=type_, url=url)
+        self["pdf"] = self.__file
+        self["pdf"].update(self.__caption)
+
+    @property
+    def caption(self) -> RichText:
+        return self.__caption
+
+    @caption.setter
+    def caption(self, value: RichText) -> None:
+        self.__caption = value
+        self["pdf"].update(self.__caption)
+
+    @caption.deleter
+    def caption(self) -> None:
+        self.__caption = RichText()
+        self["pdf"].update(self.__caption)
+
+    @property
+    def type_(self) -> str:
+        return self.__file.type_
+
+    @type_.setter
+    def type_(self, value: Literal["external", "file"]) -> None:
+        self.__file.type_ = value
+        self["pdf"] = self.__file
+
+    @type_.deleter
+    def type_(self) -> None:
+        self.__file.type_ = "external"
+        self["pdf"] = self.__file
 
     @property
     def url(self) -> str:
