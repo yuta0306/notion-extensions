@@ -61,6 +61,30 @@ Notion API Client and Extensions
         - [x] NumberedList
         - [x] ToDo
         - [x] ToDoList
+        - [ ] Code
+        - [ ] ChildPage
+        - [ ] ChildDatabase
+        - [ ] Embed
+        - [ ] Image
+        - [ ] Video
+        - [ ] File
+        - [ ] Pdf
+        - [ ] Bookmark
+        - [ ] Equation
+        - [ ] Divider
+        - [ ] TableOfContents
+        - [ ] BreadCrumb
+        - [ ] ColumnList
+        - [ ] Column
+        - [ ] LinkPreview
+        - [ ] Template
+        - [ ] LinkToPage
+        - [ ] Synced
+        - [ ] OriginalSynced
+        - [ ] ReferenceSynced
+        - [ ] SyncedFrom
+        - [ ] Table
+        - [ ] TableRow
      - [ ] user
      - [ ] common
         - [x] BaseProp
