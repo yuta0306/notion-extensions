@@ -70,8 +70,8 @@ Notion API Client and Extensions
         - [x] Video
         - [x] File
         - [x] Pdf
-        - [ ] Bookmark
-        - [ ] Equation
+        - [x] Bookmark
+        - [x] Equation
         - [ ] Divider
         - [ ] TableOfContents
         - [ ] BreadCrumb
