@@ -75,8 +75,8 @@ Notion API Client and Extensions
         - [x] Divider
         - [x] TableOfContents
         - [x] BreadCrumb
-        - [ ] ColumnList
-        - [ ] Column
+        - [x] ColumnList
+        - [x] Column
         - [ ] LinkPreview
         - [ ] Template
         - [ ] LinkToPage
