@@ -33,7 +33,7 @@ Notion API Client and Extensions
             - [ ] update block type `text`
             - [ ] update block type `checked` (`to_do`)
         - [x] Retrieve block children
-        - [ ] Append block children
+        - [x] Append block children
         - [x] Delete a block
     - [ ] Users
         - [ ] Retrieve a user
@@ -47,11 +47,13 @@ Notion API Client and Extensions
         - [x] Title
      - [ ] database
      - [ ] block
+        - [x] Block
         - [x] Children
         - [x] Paragraph
         - [x] Heading1
         - [x] Heading2
         - [x] Heading3
+        - [x] Callout
      - [ ] user
      - [ ] common
         - [x] BaseProp
@@ -76,3 +78,5 @@ Notion API Client and Extensions
         - [ ] CreatedBy
         - [ ] LastEdited
         - [ ] LastEditedBy
+        - [x] Emoji
+        - [x] Icon
