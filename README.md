@@ -68,7 +68,7 @@ Notion API Client and Extensions
         - [x] Embed
         - [x] Image
         - [x] Video
-        - [ ] File
+        - [x] File
         - [ ] Pdf
         - [ ] Bookmark
         - [ ] Equation
