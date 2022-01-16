@@ -72,7 +72,7 @@ Notion API Client and Extensions
         - [x] Pdf
         - [x] Bookmark
         - [x] Equation
-        - [ ] Divider
+        - [x] Divider
         - [ ] TableOfContents
         - [ ] BreadCrumb
         - [ ] ColumnList
