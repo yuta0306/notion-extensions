@@ -59,6 +59,8 @@ Notion API Client and Extensions
         - [x] BulletedList
         - [x] NumberedListItem
         - [x] NumberedList
+        - [x] ToDo
+        - [x] ToDoList
      - [ ] user
      - [ ] common
         - [x] BaseProp
