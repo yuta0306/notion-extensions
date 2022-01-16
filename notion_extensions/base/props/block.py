@@ -138,6 +138,38 @@ LANGUAGES: TypeAlias = Literal[
     "java/c/c++/c#",
 ]
 
+EMBED_PLATFORMS = [
+    "Framer",
+    "Twitter (tweets)",
+    "Google Drive documents",
+    "Gist",
+    "Figma",
+    "Invision,",
+    "Loom",
+    "Typeform",
+    "Codepen",
+    "PDFs",
+    "Google Maps",
+    "Whimisical",
+    "Miro",
+    "Abstract",
+    "excalidraw",
+    "Sketch",
+    "Replit",
+]
+
+IMAGE_EXT: List[str] = [
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".tif",
+    ".tiff",
+    ".bmp",
+    ".svg",
+    ".heic",
+]
+
 
 class Block(BaseProps):
     def __init__(self):
@@ -1364,19 +1396,15 @@ class Code(Block):
         self["code"]["language"] = ""
 
 
-class ChildPage(Block):
+class Embed(Block):
     """
-     ChildPage
-     ChildPage property values of block
+     Embed
+     Embed property values of block
 
     Attributes
     ----------
-    text : RichText
-        Rich text in code block
-    language : str, optional
-        Coding language in code block
-    valid_language : Literal
-        Possible values for language
+    url : str
+        Link to website the embed block will display
 
     Methods
     -------
@@ -1387,65 +1415,33 @@ class ChildPage(Block):
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
-        "type": "code",
-        "code": {
-            "text": [],
-            "language": "",
+        "type": "embed",
+        "embed": {
+            "url": "",
         },
     }
 
     def __init__(
         self,
-        *text: Union[Text, RichText],
-        language: Optional[LANGUAGES] = None,
+        url: str,
     ):
         """
         Parameters
         ----------
-        *text : Text or RichText
-            Rich text in code block
-        language : str, optional
-            Coding language in code block
+        url : str
+            Link to website the embed block will display
         """
         super().__init__()
-        base = []  # Aggregate Texts
-        for t in text:
-            if isinstance(t, RichText):
-                base.extend(list(t[t.key]))
-            elif isinstance(t, Text):
-                base.append(t)
-            else:
-                raise ValueError(
-                    f"Expected type is `RichText` or `Text`, but {type(t)} is given"
-                )
-        self.__text = RichText(key="text", *base)
-        self["code"].update(self.__text)  # Add Texts with RichText Style
-        if language is not None:
-            self["code"]["language"] = language  # Add Language
+        self["embed"]["url"] = url
 
     @property
-    def valid_language(self):
-        return LANGUAGES
+    def url(self) -> str:
+        return self["embed"]["url"]
 
-    @property
-    def text(self) -> RichText:
-        return self.__text
+    @url.setter
+    def url(self, value: str) -> None:
+        self["embed"]["url"] = value
 
-    @text.setter
-    def text(self, value: RichText) -> None:
-        if value.key != "text":
-            raise ValueError("RichText's key is must be `text`")
-        self.__text = value
-        self["code"].update(self.__text)
-
-    @property
-    def language(self) -> bool:
-        return self["code"]["language"]
-
-    @language.setter
-    def language(self, value: LANGUAGES) -> None:
-        self["code"]["language"] = value
-
-    @language.deleter
-    def language(self) -> None:
-        self["code"]["language"] = ""
+    @url.deleter
+    def url(self) -> None:
+        self["embed"]["url"] = ""

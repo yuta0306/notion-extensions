@@ -63,9 +63,9 @@ Notion API Client and Extensions
         - [x] ToDoList
         - [x] Toggle
         - [x] Code
-        - [ ] ChildPage
-        - [ ] ChildDatabase
-        - [ ] Embed
+        - [ ] ~~ChildPage~~
+        - [ ] ~~ChildDatabase~~
+        - [x] Embed
         - [ ] Image
         - [ ] Video
         - [ ] File
