@@ -61,6 +61,7 @@ Notion API Client and Extensions
         - [x] NumberedList
         - [x] ToDo
         - [x] ToDoList
+        - [x] Toggle
         - [x] Code
         - [ ] ChildPage
         - [ ] ChildDatabase
