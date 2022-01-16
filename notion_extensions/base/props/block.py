@@ -1,7 +1,7 @@
 import sys
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
-from .common import BaseProps, Text, RichText
+from .common import BaseProps, Emoji, Icon, Text, RichText
 
 if sys.version_info >= (3, 8):
     from typing import Literal
@@ -43,7 +43,12 @@ BLOCK_TYPES = Literal[
 ]
 
 
-class Children(BaseProps):
+class Block(BaseProps):
+    def __init__(self):
+        super().__init__()
+
+
+class Children(Block):
     """
     Children
     Children property values of block
@@ -59,83 +64,83 @@ class Children(BaseProps):
         Return this class as dictionary
     """
 
-    TEMPLATE: Dict[str, List[Any]] = {"children": []}
+    TEMPLATE: Dict[str, List[Block]] = {"children": []}
 
     def __init__(
         self,
-        *block: Any,
+        *block: Block,
     ):
         super().__init__()
         self.__blocks = list(block)
         self["children"] = self.__blocks
 
-    def __add__(self, other: Union[Any, List[Any]]):
+    def __add__(self, other: Union[Block, List[Block]]):
         if isinstance(other, list):
             self.extend(other)
             return self
         self.append(other)
         return self
 
-    def __iadd__(self, other: Union[Any, List[Any]]):
+    def __iadd__(self, other: Union[Block, List[Block]]):
         return self.__add__(other)
 
-    def append(self, text: Text) -> None:
+    def append(self, block: Block) -> None:
         """
-        append(text: Text)
-            Append Text to existing list of Text
+        append(block: Block)
+            Append Block to existing list of Block
 
         Parameters
         ----------
-        text : Text
-            Text you append to RichText
+        block : Block
+            Block you append to Children
         """
-        self.__blocks.append(text)
+        self.__blocks.append(block)
         self["children"] = self.__blocks
 
-    def extend(self, texts: List[Text]) -> None:
+    def extend(self, blocks: List[Block]) -> None:
         """
-        extens(texts: Text)
-            Append Text to existing list of Text
+        extens(blocks: List[Block])
+            Append Block to existing list of Block
 
         Parameters
         ----------
-        text : list of Text
-            List of text you append to RichText
+        blocks : list of Block
+            List of block you append to Children
         """
-        self.__blocks.extend(texts)
+        self.__blocks.extend(blocks)
         self["children"] = self.__blocks
 
-    def insert(self, index: int, text: Text) -> None:
+    def insert(self, index: int, block: Block) -> None:
         """
-        insert(index: int, text: Text)
-            Append Text to existing list of Text
+        insert(index: int, block: Block)
+            Append block to existing list of Block
 
         Parameters
         ----------
         index : int
-            Index you insert Text into
-        text : Text
-            Text you insert into RichText
+            Index you insert Block into Children
+        block : Block
+            Block you insert into Children
         """
-        self.__blocks.insert(index, text)
+        self.__blocks.insert(index, block)
         self["children"] = self.__blocks
 
     def pop(self, index=None):
         """
-        pop(text: Text)
-            Pop Text to existing list of Text
+        pop(Block: Block)
+            Pop Block to existing list of Block
 
         Parameters
         ----------
         index : int, default=None
-            Text you pop from RichText
+            Block you pop from RichBlock
         """
         item = self.__blocks.pop(index)
         self["children"] = self.__blocks
         return item
 
 
-class Paragraph(BaseProps):
+class Paragraph(Block):
     """
     Paragraph
     Paragraph property values of block
@@ -250,7 +255,7 @@ class Paragraph(BaseProps):
         return item
 
 
-class Heading1(BaseProps):
+class Heading1(Block):
     """
     Heading1
     Heading1 property values of block
@@ -365,7 +370,7 @@ class Heading1(BaseProps):
         return item
 
 
-class Heading2(BaseProps):
+class Heading2(Block):
     """
     Heading2
     Heading2 property values of block
@@ -480,7 +485,7 @@ class Heading2(BaseProps):
         return item
 
 
-class Heading3(BaseProps):
+class Heading3(Block):
     """
     Heading3
     Heading3 property values of block
@@ -593,3 +598,50 @@ class Heading3(BaseProps):
         item = self.__texts.pop(index)
         self["heading_3"] = self.__texts
         return item
+
+
+class Callout(Block):
+    """
+    Callout
+    Callout property values of block
+
+    Attributes
+    ----------
+
+    Methods
+    -------
+    clear()
+        Clear data of title
+    json()
+        Return this class as dictionary
+    """
+
+    TEMPLATE: Dict[str, Union[str, Dict]] = {
+        "type": "callout",
+        "callout": {
+            "text": [],
+        },
+    }
+
+    def __init__(
+        self,
+        *text: Union[Text, RichText],
+        icon: Icon = Icon(Emoji("")),
+        children: Optional[Children] = None,
+    ):
+        super().__init__()
+        self["callout"].update(icon)  # Add Icon
+        base = []  # Aggregate Texts
+        for t in text:
+            if isinstance(t, RichText):
+                base.extend(list(t[t.key]))
+            elif isinstance(t, Text):
+                base.append(t)
+            else:
+                raise ValueError(
+                    f"Expected type is `RichText` or `Text`, but {type(t)} is given"
+                )
+        self.__texts = RichText(key="text", *base)
+        self["callout"].update(self.__texts)  # Add Texts with RichText Style
+        if children is not None:
+            self["callout"].update(children)  # if children exists, Add Chilren
