@@ -69,7 +69,7 @@ Notion API Client and Extensions
         - [x] Image
         - [x] Video
         - [x] File
-        - [ ] Pdf
+        - [x] Pdf
         - [ ] Bookmark
         - [ ] Equation
         - [ ] Divider
@@ -110,5 +110,6 @@ Notion API Client and Extensions
         - [ ] CreatedBy
         - [ ] LastEdited
         - [ ] LastEditedBy
+        - [x] FileObject
         - [x] Emoji
         - [x] Icon
