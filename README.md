@@ -46,7 +46,7 @@ Notion API Client and Extensions
      - [ ] page
         - [x] Title
      - [ ] database
-     - [ ] block
+     - [x] block
         - [x] Block
         - [x] Children
         - [x] Paragraph
@@ -85,8 +85,8 @@ Notion API Client and Extensions
         - [x] OriginalSynced
         - [x] ReferenceSynced
         - [ ] ~~SyncedFrom~~
-        - [ ] Table
-        - [ ] TableRow
+        - [x] Table
+        - [x] TableRow
      - [ ] user
      - [ ] common
         - [x] BaseProp

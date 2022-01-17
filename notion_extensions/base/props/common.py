@@ -468,6 +468,13 @@ class RichText(BaseProps):
     def key(self) -> str:
         return self.__key
 
+    @key.setter
+    def key(self, value: str) -> None:
+        key_ = self.key
+        if value != key_:
+            self[value].update(self[key_])
+            super(BaseProps, self).pop(key_)
+
     def append(self, text: Text) -> None:
         """
         append(text: Text)
