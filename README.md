@@ -77,13 +77,14 @@ Notion API Client and Extensions
         - [x] BreadCrumb
         - [x] ColumnList
         - [x] Column
-        - [ ] LinkPreview
-        - [ ] Template
-        - [ ] LinkToPage
-        - [ ] Synced
-        - [ ] OriginalSynced
-        - [ ] ReferenceSynced
-        - [ ] SyncedFrom
+        - [ ] ~~LinkPreview~~
+            - This cannot be used via API
+        - [ ] ~~Template~~
+        - [x] LinkToPage
+        - [ ] ~~Synced~~
+        - [x] OriginalSynced
+        - [x] ReferenceSynced
+        - [ ] ~~SyncedFrom~~
         - [ ] Table
         - [ ] TableRow
      - [ ] user
