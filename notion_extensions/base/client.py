@@ -1,5 +1,5 @@
 import json
-from typing import Any, Dict, Final, List, Tuple, Union, Optional
+from typing import Any, Dict, Final, Tuple, Union, Optional
 import sys
 import os
 import warnings
@@ -7,6 +7,7 @@ import warnings
 import requests
 
 from notion_extensions.base.props.block import Children
+from notion_extensions.base.props.common import Cover, Icon
 
 from .props.page import Title
 
@@ -156,9 +157,9 @@ class NotionClient:
         parent_id: Union[str, UrlLike],
         parent_type: Literal["database", "page"],
         properties: Title,
-        children: Optional[List[Dict[Any, Any]]] = None,
-        icon: Optional[PAGE_ICON] = None,
-        cover: Optional[PAGE_COVER] = None,
+        children: Optional[Children] = None,
+        icon: Optional[Icon] = None,
+        cover: Optional[Cover] = None,
     ) -> Tuple[int, Dict[str, Any]]:  # create a page
         """
         Create a page with page_id
@@ -200,10 +201,14 @@ class NotionClient:
                 parent_type: parent_id,
             },
             "properties": properties,
-            "children": children if children is not None else [],
-            "icon": icon,
-            "cover": cover,
         }
+        if children is not None:  # Add children
+            body.update(children)
+        if icon is not None:  # Add icon
+            body.update(icon)
+        if cover is not None:  # Add cover
+            body.update(cover)
+
         # create a page
         res = requests.post(
             "https://api.notion.com/v1/pages/",

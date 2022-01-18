@@ -6,12 +6,12 @@ Notion API Client and Extensions
 - [ ] Client Class
     - [ ] Pages
         - [x] Retrieve a page
-        - [ ] Create a page
+        - [x] Create a page
             - [x] create page in page
             - [x] create page in database
-            - [ ] create page with children blocks
-            - [ ] create page with icon
-            - [ ] create page with cover
+            - [x] create page with children blocks
+            - [x] create page with icon
+            - [x] create page with cover
         - [ ] Update a page
             - [ ] update page with children blocks (name: properties)
             - [ ] archive (delete) or un-archive (restore)
@@ -117,3 +117,4 @@ Notion API Client and Extensions
         - [x] FileObject
         - [x] Emoji
         - [x] Icon
+        - [x] Cover

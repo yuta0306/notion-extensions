@@ -2,6 +2,17 @@ import copy
 from typing import Any, Dict, List, Literal, Optional, Union
 import warnings
 
+__all__ = [
+    "BaseProps",
+    "Annotations",
+    "Text",
+    "RichText",
+    "FileObject",
+    "Emoji",
+    "Icon",
+    "Cover",
+]
+
 
 class BaseProps(dict):
     TEMPLATE: Dict = {}
@@ -650,22 +661,20 @@ class Icon(BaseProps):
 
     Attributes
     ----------
-    emoji : Emoji
-        Emoji Object
+    icon : Emoji or File
+        Emoji or File Object
 
     Methods
     -------
     clear()
         Clear data of emoji
-
-    .. note:: file object is not be implemented yet
     """
 
     TEMPLATE: Dict[str, Dict] = {
         "icon": {},
     }
 
-    def __init__(self, emoji: Emoji, file: Optional[FileObject] = None):
+    def __init__(self, emoji: Emoji = None, file: Optional[FileObject] = None):
         """
         Parameters
         ----------
@@ -677,16 +686,70 @@ class Icon(BaseProps):
         .. note:: file object is not be implemented yet
         """
         super().__init__()
-        self["icon"] = emoji
+        if emoji is None and file is None:  # raise Error
+            raise ValueError("emoji or file must be not None")
+        if emoji is not None and file is not None:  # emoji will be set to icon
+            warnings.warn("Both of emoji and file are given, so emoji is set to icon")
+
+        if emoji is not None:
+            self["icon"] = emoji
+        else:
+            self["icon"] = file
 
     @property
-    def emoji(self) -> Emoji:
+    def emoji(self) -> Union[Emoji, FileObject]:
         return self["icon"]
 
     @emoji.setter
-    def emoji(self, value: Emoji) -> None:
+    def emoji(self, value: Union[Emoji, FileObject]) -> None:
         self["icon"] = value
 
     @emoji.deleter
     def emoji(self) -> None:
         self["icon"] = {}
+
+
+class Cover(BaseProps):
+    """
+    Cover
+    Cover property values
+
+    Attributes
+    ----------
+    image : FileObject
+        FileObject of cover image
+
+    Methods
+    -------
+    clear()
+        Clear data of emoji
+    """
+
+    TEMPLATE: Dict[str, Dict] = {
+        "cover": {},
+    }
+
+    def __init__(self, image: str):
+        """
+        Parameters
+        ----------
+        image : str
+            cover image url
+        """
+        super().__init__()
+        self["cover"] = FileObject(type_="external", url=image)
+
+    @property
+    def image(self) -> str:
+        return self["cover"]
+
+    @image.setter
+    def image(self, value: Union[str, FileObject]) -> None:
+        if isinstance(value, FileObject):
+            self["cover"] = value
+        else:
+            self["cover"] = FileObject(type_="external", url=value)
+
+    @image.deleter
+    def image(self) -> None:
+        self["cover"] = {}
