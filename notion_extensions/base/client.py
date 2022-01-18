@@ -184,8 +184,6 @@ class NotionClient:
         -------
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
-
-        .. note:: Implement children, icon, cover
         """
         if parent_type not in (
             "database",
@@ -222,10 +220,10 @@ class NotionClient:
         self,
         *,
         page_id: Union[str, UrlLike],
-        properties: Dict[Any, Any],
+        properties: Optional[Title] = None,
         archived: bool = False,
-        icon: Optional[PAGE_ICON] = None,
-        cover: Optional[PAGE_COVER] = None,
+        icon: Optional[Icon] = None,
+        cover: Optional[Cover] = None,
     ) -> Tuple[int, Dict[str, Any]]:  # create a page
         """
         Update a page with page_id
@@ -234,7 +232,7 @@ class NotionClient:
         ----------
         page_id : str or UrlLike, optional
             ID of the parent page, or URL of the parent page
-        properties : Dict of Any
+        properties : Title
             properties of the page you will update
         archived : bool, default=False
             Set to True to archive (delete) a page. Set to False to un-archive (restore) a page
@@ -253,13 +251,17 @@ class NotionClient:
         page_id = self._parse_id(page_id, type_="page")  # parse ID from URL
 
         # set body
-        body = {
-            "properties": properties,
+        body: dict = {
             "archived": archived,
-            "icon": icon,
-            "cover": cover,
         }
-        # create a page
+        if properties is not None:
+            body["properties"] = properties
+        if icon is not None:  # Add icon
+            body.update(icon)
+        if cover is not None:  # Add cover
+            body.update(cover)
+
+        # update page
         res = requests.patch(
             f"https://api.notion.com/v1/pages/{page_id}",
             headers=self.headers,
@@ -272,7 +274,7 @@ class NotionClient:
         self,
         *,
         page_id: Union[str, UrlLike],
-    ) -> Tuple[int, Dict[str, Any]]:  # create a page
+    ) -> Tuple[int, Dict[str, Any]]:  # delete a page
         """
         Delete a page with page_id
 
