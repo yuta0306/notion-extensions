@@ -1,17 +1,9 @@
-from .common import (
-    BaseProps,
-    Annotations,
-    PlainText,
-    Text,
-    RichText,
-)
-from .page import Title
+from . import common
+from . import page
+from . import block
 
 __all__ = [
-    "BaseProps",
-    "Annotations",
-    "PlainText",
-    "Text",
-    "RichText",
-    "Title",
+    "block",
+    "common",
+    "page",
 ]

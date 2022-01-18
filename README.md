@@ -92,8 +92,11 @@ Notion API Client and Extensions
         - [x] BaseProp
         - [x] Annotations
         - [x] PlainText
-        - [x] Text
-        - [x] RichText
+        - [ ] Text
+            - [x] text
+            - [ ] mention
+            - [ ] equation 
+        - [ ] RichText
         - [ ] Number
         - [ ] Select
         - [ ] MultiSelect
