@@ -235,12 +235,18 @@ class PlainText(BaseProps):
         "type": "text",
         "text": {
             "content": "",
+            "link": None,
         },
     }
 
-    def __init__(self, text: str = ""):
+    def __init__(
+        self,
+        text: str = "",
+        link: Optional[str] = None,
+    ):
         super().__init__()
         self.text = text
+        self.link = link
 
     def __add__(self, other: str):
         self.text = self.text + other
@@ -260,6 +266,18 @@ class PlainText(BaseProps):
     @text.deleter
     def text(self) -> None:
         self["text"]["content"] = ""
+
+    @property
+    def link(self) -> Union[str, None]:
+        return self["text"]["link"]
+
+    @link.setter
+    def link(self, value: Union[str, None]) -> None:
+        self["text"]["link"] = value
+
+    @link.deleter
+    def link(self) -> None:
+        self["text"]["link"] = None
 
 
 class Text(BaseProps):
@@ -290,10 +308,11 @@ class Text(BaseProps):
         Clear data of text
     """
 
-    TEMPLATE: Dict[str, Union[str, Dict[str, Union[str, bool]]]] = {
+    TEMPLATE: Dict[str, Union[str, Dict[str, Union[str, bool, None]]]] = {
         "type": "text",
         "text": {
             "content": "",
+            "link": None,
         },
         "annotations": {
             "bold": False,
@@ -308,6 +327,7 @@ class Text(BaseProps):
     def __init__(
         self,
         text: str = "",
+        link: Optional[str] = None,
         bold: bool = False,
         italic: bool = False,
         strikethrough: bool = False,
@@ -316,7 +336,7 @@ class Text(BaseProps):
         color: str = "default",
     ):
         super().__init__()
-        self.__text = PlainText(text=text)
+        self.__text = PlainText(text=text, link=link)
         self.__annotations = Annotations(
             bold=bold,
             italic=italic,
@@ -339,6 +359,18 @@ class Text(BaseProps):
     @text.deleter
     def text(self):
         del self.__text.text
+
+    @property
+    def link(self):
+        return self.__text.link
+
+    @link.setter
+    def link(self, value: Union[str, None]) -> None:
+        self.__text.link = value
+
+    @text.deleter
+    def link(self) -> None:
+        del self.__text.link
 
     @property
     def bold(self):
