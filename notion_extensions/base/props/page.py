@@ -1,10 +1,17 @@
-from typing import Dict, List, Text
+import sys
+from typing import Dict, List, Optional, Text
 import warnings
+
+if sys.version_info > (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
 
 from .common import BaseProps, PlainText
 
 __all__ = [
     "Title",
+    "Parent",
 ]
 
 
@@ -118,3 +125,49 @@ class Title(BaseProps):
     @in_page.deleter
     def in_page(self):
         self.__in_page = True
+
+
+class Parent(BaseProps):
+    """
+    Parent
+    Parent property values of a page
+
+    Attributes
+    ----------
+    parent_type : 'page' or 'database' or 'workspace'
+        The parent of this page. Can be a database, page, or workspace
+    id_ : str
+        The ID of the page, database or workspace that this page belongs to
+
+    Methods
+    -------
+    clear()
+        Clear data of title
+    json()
+        Return this class as dictionary
+    """
+
+    TEMPLATE: Dict[str, str] = {}
+
+    def __init__(
+        self,
+        parent_type: Literal["page", "database", "workspace"],
+        id_: Optional[str] = None,
+    ):
+        super().__init__()
+        if parent_type in ("page", "database"):
+            if id_ is None:
+                raise ValueError()
+        self["type"] = f"{parent_type}_id"
+        if parent_type in ("workspace",):
+            self[parent_type] = True
+        else:
+            self[f"{parent_type}_id"] = id_
+
+    @property
+    def parent_type(self):
+        return self["type"]
+
+    @property
+    def id_(self):
+        return self[self.parent_type]

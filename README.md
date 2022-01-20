@@ -12,11 +12,11 @@ Notion API Client and Extensions
             - [x] create page with children blocks
             - [x] create page with icon
             - [x] create page with cover
-        - [ ] Update a page
-            - [ ] update page with children blocks (name: properties)
-            - [ ] archive (delete) or un-archive (restore)
-            - [ ] update icon for page
-            - [ ] update cover for page
+        - [x] Update a page
+            - [x] update page (name: properties (Title only))
+            - [x] archive (delete) or un-archive (restore)
+            - [x] update icon for page
+            - [x] update cover for page
         - [x] ~~Archive (delete) a page~~
         - [ ] Retrieve a page propoerty item
             - [ ] ...
@@ -24,7 +24,7 @@ Notion API Client and Extensions
         - [ ] Query a database
         - [ ] Create a database
         - [ ] Update a database
-        - [ ] Retrieve a database
+        - [x] Retrieve a database
         - [ ] ~~List databases (deprecated)~~
     - [ ] Blocks
         - [x] Retrieve a block

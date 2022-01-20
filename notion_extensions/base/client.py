@@ -128,9 +128,36 @@ class NotionClient:
             raise ValueError("type_ must be `page` or `database` or `block`")
         return id_
 
+    # Databases
+    def get_database(
+        self,
+        *,
+        database_id: Union[str, UrlLike],
+    ) -> Tuple[int, Dict[str, Any]]:  # get a page
+        """
+        Get a database with database_id
+
+        Parameters
+        ----------
+        database_id : str or UrlLike
+            ID or URL of the database you can get
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+        """
+        database_id = self._parse_id(database_id, type_="database")
+        res = requests.get(
+            f"https://api.notion.com/v1/databases/{database_id}", headers=self.headers
+        )
+        return res.status_code, res.json()
+
     # Pages
     def get_page(
-        self, *, page_id: Union[str, UrlLike]
+        self,
+        *,
+        page_id: Union[str, UrlLike],
     ) -> Tuple[int, Dict[str, Any]]:  # get a page
         """
         Get a page with page_id
