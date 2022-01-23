@@ -96,7 +96,7 @@ Notion API Client and Extensions
             - [x] text
             - [ ] mention
             - [ ] equation 
-        - [ ] RichText
+        - [x] RichText
         - [ ] Number
         - [ ] Select
         - [ ] MultiSelect

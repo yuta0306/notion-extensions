@@ -7,7 +7,7 @@ import warnings
 import requests
 
 from notion_extensions.base.props.block import Children
-from notion_extensions.base.props.common import Cover, Icon
+from notion_extensions.base.props.common import Cover, Icon, RichText
 
 from .props.page import Title
 
@@ -150,6 +150,48 @@ class NotionClient:
         database_id = self._parse_id(database_id, type_="database")
         res = requests.get(
             f"https://api.notion.com/v1/databases/{database_id}", headers=self.headers
+        )
+        return res.status_code, res.json()
+
+    def create_database(
+        self,
+        *,
+        parent_page_id: Union[str, UrlLike],
+        properties: Dict,
+        title: Optional[RichText] = None,
+        icon: Optional[Icon] = None,
+    ) -> Tuple[int, Dict[str, Any]]:  # get a page
+        """
+        Get a database with database_id
+
+        Parameters
+        ----------
+        database_id : str or UrlLike
+            ID or URL of the database you can get
+
+        Returns
+        -------
+        Tuple[int, Dict[str, Any]]
+            This returns status_code and response of dictionary
+        """
+        parent_page_id = self._parse_id(parent_page_id, type_="page")
+        body = {
+            "parent": {
+                "type": "page_id",
+                "page_id": parent_page_id,
+            },
+        }
+        body.update(properties)
+        if title is not None:
+            title.key = "title"
+            body.update(title)
+        if icon is not None:
+            body.update(icon)
+
+        res = requests.post(
+            "https://api.notion.com/v1/databases/",
+            headers=self.headers,
+            data=json.dumps(body),
         )
         return res.status_code, res.json()
 
