@@ -46,6 +46,11 @@ Notion API Client and Extensions
      - [ ] page
         - [x] Title
      - [ ] database
+        - [ ] Title
+        - [x] Option
+        - [x] Select
+        - [x] MultiSelect
+        - [x] Number
      - [x] block
         - [x] Block
         - [x] Children
