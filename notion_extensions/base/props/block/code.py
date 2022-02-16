@@ -5,13 +5,13 @@ if sys.version_info >= (3, 8):  # "from typing" in Python 3.9 and earlier
     from typing import Literal
 else:
     from typing_extensions import Literal
-if sys.version_info > (3, 9):  # "from typing_extensions" in Python 3.9 and earlier
+if sys.version_info >= (3, 10):  # "from typing_extensions" in Python 3.9 and earlier
     from typing import TypeAlias
 else:
     from typing_extensions import TypeAlias
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Code",
