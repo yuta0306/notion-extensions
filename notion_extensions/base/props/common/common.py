@@ -1,6 +1,6 @@
 import copy
-from typing import Any, Dict, List, Literal, Optional, Union
 import warnings
+from typing import Any, Dict, List, Literal, Optional, Union
 
 __all__ = [
     "BaseProps",
@@ -356,10 +356,12 @@ class Text(BaseProps):
     @text.setter
     def text(self, value: str):
         self.__text.text = value
+        self.update(self.__text)
 
     @text.deleter
     def text(self):
         del self.__text.text
+        self.update(self.__text)
 
     @property
     def link(self):
@@ -368,10 +370,12 @@ class Text(BaseProps):
     @link.setter
     def link(self, value: Union[str, None]) -> None:
         self.__text.link = value
+        self.update(self.__text)
 
     @text.deleter
     def link(self) -> None:
         del self.__text.link
+        self.update(self.__text)
 
     @property
     def bold(self):
@@ -380,10 +384,12 @@ class Text(BaseProps):
     @bold.setter
     def bold(self, value: bool):
         self.__annotations.bold = value
+        self.update(self.__annotations)
 
     @bold.deleter
     def bold(self) -> None:
         del self.__annotations.bold
+        self.update(self.__annotations)
 
     @property
     def italic(self):
@@ -392,10 +398,12 @@ class Text(BaseProps):
     @italic.setter
     def italic(self, value: bool):
         self.__annotations.italic = value
+        self.update(self.__annotations)
 
     @italic.deleter
     def italic(self) -> None:
         del self.__annotations.italic
+        self.update(self.__annotations)
 
     @property
     def strikethrough(self):
@@ -404,10 +412,12 @@ class Text(BaseProps):
     @strikethrough.setter
     def strikethrough(self, value: bool):
         self.__annotations.strikethrough = value
+        self.update(self.__annotations)
 
     @strikethrough.deleter
     def strikethrough(self) -> None:
         del self.__annotations.strikethrough
+        self.update(self.__annotations)
 
     @property
     def underline(self):
@@ -416,10 +426,12 @@ class Text(BaseProps):
     @underline.setter
     def underline(self, value: bool):
         self.__annotations.underline = value
+        self.update(self.__annotations)
 
     @underline.deleter
     def underline(self) -> None:
         del self.__annotations.underline
+        self.update(self.__annotations)
 
     @property
     def code(self):
@@ -428,10 +440,12 @@ class Text(BaseProps):
     @code.setter
     def code(self, value: bool):
         self.__annotations.code = value
+        self.update(self.__annotations)
 
     @code.deleter
     def code(self) -> None:
         del self.__annotations.code
+        self.update(self.__annotations)
 
     @property
     def color(self):
@@ -440,10 +454,12 @@ class Text(BaseProps):
     @color.setter
     def color(self, value: str):
         self.__annotations.color = value
+        self.update(self.__annotations)
 
     @color.deleter
     def color(self):
         del self.__annotations.color
+        self.update(self.__annotations)
 
 
 class RichText(BaseProps):
