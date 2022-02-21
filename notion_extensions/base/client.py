@@ -1,11 +1,10 @@
 import json
-from typing import Any, Dict, Final, Tuple, Union, Optional
-import sys
 import os
+import sys
 import warnings
+from typing import Any, Dict, Final, Optional, Tuple, Union
 
 import requests
-
 from notion_extensions.base.props.block import Children
 from notion_extensions.base.props.common import Cover, Icon, RichText
 

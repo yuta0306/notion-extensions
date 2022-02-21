@@ -1,8 +1,8 @@
 import sys
-from typing import Dict, List, Optional, Text
 import warnings
+from typing import Dict, List, Optional, Text
 
-if sys.version_info > (3, 8):
+if sys.version_info >= (3, 8):
     from typing import Literal
 else:
     from typing_extensions import Literal

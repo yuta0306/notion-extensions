@@ -5,6 +5,7 @@ import warnings
 __all__ = [
     "BaseProps",
     "Annotations",
+    "PlainText",
     "Text",
     "RichText",
     "FileObject",

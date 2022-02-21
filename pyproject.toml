@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "notion-extensions"
+version = "0.1.0"
+description = ""
+authors = ["yuta0306 <you-2001-3-6@ezweb.ne.jp>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.27.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^22.1.0"
+isort = "^5.10.1"
+mypy = "^0.931"
+flake8 = "^4.0.1"
+types-requests = "^2.27.10"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
