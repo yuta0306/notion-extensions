@@ -55,6 +55,15 @@ class NotionClient:
             Name of the environment variable which has API key of Notion.
             If key is not given, name is used for getting API key.
             `name='NOTION_KEY'` as default.
+        
+        Usage
+        ------
+        >>> from notion_extensions import NotionClient  
+        >>> client=NotionClient()
+        >>> client
+        NotionClient
+        ::   key   :: **************************************************
+        :: version :: 2021-08-16
         """
         if key is None:
             key = os.environ.get(name)
@@ -527,6 +536,9 @@ class NotionClient:
         ------
         ValueError
             if page_size is 0 or less than 0
+
+        //Add document below
+
         """
         # parse block_id from url-like
         block_id = self._parse_id(block_id, type_="block")
