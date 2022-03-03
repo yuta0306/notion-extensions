@@ -48,7 +48,7 @@ class Paragraph(Block):
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
         self.__texts = RichText(key="rich_text", *base)
-
+        ## text->rich_text
         self.update(
             {
                 "object": "block",
