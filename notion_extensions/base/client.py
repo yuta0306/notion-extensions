@@ -35,7 +35,7 @@ class NotionClient:
     version : str
         Notion version used for authorization
 
-    Methods
+    Methodsenv
     -------
     get_page(page_id: str)
         Get a page with page_id.
@@ -73,7 +73,7 @@ class NotionClient:
                 )
 
         self.__key: Final[str] = key
-        self.__version: Final[str] = "2021-08-16"
+        self.__version: Final[str] = "2022-02-22"
         self.__headers: Final[Dict[str, str]] = {
             "Notion-Version": self.version,
             "Content-Type": "application/json",
@@ -549,14 +549,14 @@ class NotionClient:
         >>> from notion_extensions.base.props.block.children import Children
         >>> from notion_extensions.base.props.block.heading import Heading1
         >>> from notion_extensions.base.props.common.common import Text
-        >>> text=Text("Text")     
-        >>> heading=text
-        >>> heading=Heading1(text)
-        >>> children=Children(heading)
-        >>> client.append_block_children(block_id="https://www.notion.so/0ed6cb478e6f40bc9a9408f4f0d084a8",children=children)
+        >>> text = Text("Text")     
+        >>> heading = text
+        >>> heading = Heading1(text)
+        >>> children = Children(heading)
+        >>> client.append_block_children(block_id="https://www.notion.so/0ed6cb478e6f40bc9a9408f4f0d084a8", children=children)
         
         if you want change text color
-        >>> text.color="color"
+        >>> text.color = "color"
         
         """
         # parse block_id from url-like

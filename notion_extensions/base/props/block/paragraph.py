@@ -47,7 +47,7 @@ class Paragraph(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {
