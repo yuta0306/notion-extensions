@@ -55,10 +55,10 @@ class NotionClient:
             Name of the environment variable which has API key of Notion.
             If key is not given, name is used for getting API key.
             `name='NOTION_KEY'` as default.
-        
+
         Usage
         ------
-        >>> from notion_extensions import NotionClient  
+        >>> from notion_extensions import NotionClient
         >>> client=NotionClient()
         >>> client
         NotionClient
@@ -221,6 +221,11 @@ class NotionClient:
         -------
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
+
+        Usage
+        -----
+         client.get_page(page_id="https...")
+
         """
         page_id = self._parse_id(page_id)
         res = requests.get(
@@ -261,13 +266,15 @@ class NotionClient:
         -------
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
-        
+
         Usage
         -----
         >>> from notion_extensions.base.props.page import Title
         >>> client.create_page(parent_id="PageURL",parent_type="page",properties=Title(title="TitleName"))
-        
-        
+
+
+
+
         """
         if parent_type not in (
             "database",
@@ -549,15 +556,15 @@ class NotionClient:
         >>> from notion_extensions.base.props.block.children import Children
         >>> from notion_extensions.base.props.block.heading import Heading1
         >>> from notion_extensions.base.props.common.common import Text
-        >>> text = Text("Text")     
+        >>> text = Text("Text")
         >>> heading = text
         >>> heading = Heading1(text)
         >>> children = Children(heading)
-        >>> client.append_block_children(block_id="https://www.notion.so/0ed6cb478e6f40bc9a9408f4f0d084a8", children=children)
-        
+        >>> client.append_block_children(block_id="https://", children=children)
+
         if you want change text color
         >>> text.color = "color"
-        
+
         """
         # parse block_id from url-like
         block_id = self._parse_id(block_id, type_="block")
