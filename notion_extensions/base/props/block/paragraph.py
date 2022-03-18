@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Paragraph",
@@ -48,7 +48,6 @@ class Paragraph(Block):
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
         self.__texts = RichText(key="rich_text", *base)
-        ## text->rich_text
         self.update(
             {
                 "object": "block",

@@ -6,8 +6,8 @@ if sys.version_info >= (3, 8):  # "from typing" in Python 3.9 and earlier
 else:
     from typing_extensions import Literal
 
+from ..common import FileObject, RichText, Text
 from .block import Block
-from ..common import Text, RichText, FileObject
 
 __all__ = [
     "Video",
@@ -21,7 +21,7 @@ class Video(Block):
 
     Attributes
     ----------
-    *caption : Text or RichText
+    caption : RichText
             Caption of the video block
     url : str
         Link to website the video block will display
@@ -56,12 +56,45 @@ class Video(Block):
         """
         Parameters
         ----------
+        *caption : Text or RichText
+            Caption of the video block
         url : str, optional
             Link to website the video block will display
         type_ : 'external' or 'file', default='external'
             Type of this file object. Possible values are: 'external', 'file'
         file : FileObject, optional
             FileObject
+
+        Raises
+        ------
+        ValueError
+            The set of Text or RichText are not given as caption
+        ValueError
+            url and file are given as None
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Video
+        >>> from notion_extensions.base.props.common import Text, RichText, FileObject
+        >>> url = "https://..."
+        >>> text = Text("This is a caption")
+        >>> video = Video(text, url=url, type_="external")
+        >>> video
+        {
+            'type': 'video',
+            'video': {
+                'type': 'external',
+                'external': {'url': 'https://...'},
+                'caption': [
+                    {
+                        'type': 'text',
+                        'text': {'content': 'This is a caption', 'link': None},
+                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                        'underline': False, 'code': False, 'color': 'default'}
+                    }
+                ]
+            }
+        }
         """
         super().__init__()
         base = []  # Aggregate Texts

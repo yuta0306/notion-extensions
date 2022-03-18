@@ -1,8 +1,8 @@
 from typing import Dict, List, Union
 
+from ..common import RichText
 from .block import Block
 from .children import Children
-from ..common import RichText
 
 __all__ = [
     "TableRow",
