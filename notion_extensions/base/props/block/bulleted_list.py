@@ -28,6 +28,14 @@ class BulletedListItem(Block):
         Clear data of title
     json()
         Return this class as dictionary
+    
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import BulletedListItem
+    >>> text=Text("text")
+    >>> BulletedListItem(text)                   
+    {'type': 'bulleted_list_item', 'bulleted_list_item': {'text': [{'type': 'text', 'text': {'content': 'text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}]}}
+    
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

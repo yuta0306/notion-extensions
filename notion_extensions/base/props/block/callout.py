@@ -29,6 +29,12 @@ class Callout(Block):
         Clear data of title
     json()
         Return this class as dictionary
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import Callout         
+    >>> Callout()
+    {'type': 'callout', 'callout': {'text': [], 'icon': {'type': 'emoji', 'emoji': ''}}}
+    
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
