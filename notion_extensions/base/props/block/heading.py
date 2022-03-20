@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Heading1",
@@ -30,7 +30,7 @@ class Heading1(Block):
         "object": "block",
         "type": "heading_1",
         "heading_1": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -49,7 +49,7 @@ class Heading1(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {
@@ -145,7 +145,7 @@ class Heading2(Block):
         "object": "block",
         "type": "heading_2",
         "heading_2": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -164,7 +164,7 @@ class Heading2(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {
@@ -260,7 +260,7 @@ class Heading3(Block):
         "object": "block",
         "type": "heading_3",
         "heading_3": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -279,7 +279,7 @@ class Heading3(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {

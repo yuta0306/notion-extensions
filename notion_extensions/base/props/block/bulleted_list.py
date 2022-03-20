@@ -1,8 +1,8 @@
 from typing import Dict, Optional, Union
 
+from ..common import RichText, Text
 from .block import Block
 from .children import Children
-from ..common import Text, RichText
 
 __all__ = [
     "BulletedListItem",
@@ -28,20 +28,20 @@ class BulletedListItem(Block):
         Clear data of title
     json()
         Return this class as dictionary
-    
+
     Usage
     -----
     >>> from notion_extensions.base.props.block import BulletedListItem
     >>> text=Text("text")
-    >>> BulletedListItem(text)                   
+    >>> BulletedListItem(text)
     {'type': 'bulleted_list_item', 'bulleted_list_item': {'text': [{'type': 'text', 'text': {'content': 'text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}]}}
-    
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
         "type": "bulleted_list_item",
         "bulleted_list_item": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -69,7 +69,7 @@ class BulletedListItem(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__text = RichText(key="text", *base)
+        self.__text = RichText(key="rich_text", *base)
         self["bulleted_list_item"].update(self.__text)  # Add Texts with RichText Style
         if children is not None:
             self["bulleted_list_item"].update(
@@ -82,8 +82,8 @@ class BulletedListItem(Block):
 
     @text.setter
     def text(self, value: RichText) -> None:
-        if value.key != "text":
-            raise ValueError("RichText's key is must be `text`")
+        if value.key != "rich_text":
+            raise ValueError("RichText's key is must be `rich_text`")
         self.__text = value
         self["bulleted_list_item"].update(self.__text)
 

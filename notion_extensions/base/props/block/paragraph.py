@@ -28,7 +28,7 @@ class Paragraph(Block):
         "object": "block",
         "type": "paragraph",
         "paragraph": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
