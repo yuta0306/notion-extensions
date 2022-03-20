@@ -32,7 +32,7 @@ class Toggle(Block):
     TEMPLATE: Dict[str, Union[str, Dict, bool]] = {
         "type": "toggle",
         "toggle": {
-            "text": [],
+            "rich_text": [],
             "children": [],
         },
     }
@@ -63,7 +63,7 @@ class Toggle(Block):
         {
             'type': 'toggle',
             'toggle': {
-                'text': [
+                'rich_text': [
                     {
                         'type': 'text',
                         'text': {'content': 'This is a toggle', 'link': None},

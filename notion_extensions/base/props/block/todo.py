@@ -35,7 +35,7 @@ class ToDo(Block):
     TEMPLATE: Dict[str, Union[str, Dict, bool]] = {
         "type": "to_do",
         "to_do": {
-            "text": [],
+            "rich_text": [],
             "checked": False,
         },
     }
@@ -185,7 +185,7 @@ class ToDoList(Children):
                 {
                     'type': 'to_do',
                     'to_do': {
-                        'text': [
+                        'rich_text': [
                             {
                                 'type': 'text',
                                 'text': {'content': 'unchecked', 'link': None},
@@ -199,7 +199,7 @@ class ToDoList(Children):
                 {
                     'type': 'to_do',
                     'to_do': {
-                        'text': [
+                        'rich_text': [
                             {
                                 'type': 'text',
                                 'text': {'content': 'checked', 'link': None},
