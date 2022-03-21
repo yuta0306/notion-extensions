@@ -96,24 +96,59 @@ FORMAT: TypeAlias = Literal[
 
 
 class Number(BaseProps):
-    def __init__(self, key: str, format_: FORMAT):
+    """
+    Number database property objects
+
+    Attributes
+    ----------
+    key : str
+        The name of the property as it appears in Notion.
+    format : FORMAT
+        How the number is displayed in Notion.
+    """
+
+    def __init__(self, key: str, format: FORMAT):
+        """
+        Number database property objects
+
+        Parameters
+        ----------
+        key : str
+            The name of the property as it appears in Notion.
+        format_ : FORMAT
+            How the number is displayed in Notion.
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.database import Number
+        >>> number = Number(key="price", format="dollar")
+        >>> number
+        {
+            'price': {
+                'number': {'format': 'dollar'}
+            }
+        }
+        """
         super().__init__()
-        if format_ not in AVAILABLE_FORMAT:
+        if format not in AVAILABLE_FORMAT:
             raise ValueError
-        self.key = key
+        self.__key = key
         self[key] = {
             "number": {
                 "format": "",
             }
         }
-        self.format = format_
+
+    @property
+    def key(self) -> str:
+        return self.__key
 
     @property
     def format(self) -> str:
-        return self[self.key]["number"]["format"]
+        return self[self.__key]["number"]["format"]
 
     @format.setter
     def format(self, value: str) -> None:
         if value not in AVAILABLE_FORMAT:
             raise ValueError
-        self[self.key]["number"]["format"] = value
+        self[self.__key]["number"]["format"] = value

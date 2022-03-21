@@ -9,9 +9,46 @@ __all__ = [
 
 
 class MultiSelect(BaseProps):
+    """
+    Multi-Select database property objects
+
+    Attributes
+    ----------
+    key : str
+        The name of the property as it appears in Notion.
+    """
+
     def __init__(self, key: str, *option: Option):
+        """
+        Multi-Select database property objects
+
+        Parameters
+        ----------
+        key : str
+            The name of the property as it appears in Notion.
+        *option : Option
+            Sorted list of options available for this property.
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.database import Option, MultiSelect
+        >>> option1 = Option(name="option 1")
+        >>> option2 = Option(name="option 2", color="red")
+        >>> multi_select = MultiSelect("options", option1, option2)
+        >>> multi_select
+        {
+            'options': {
+                'multi_select': {
+                    'options': [
+                        {'name': 'option 1', 'color': 'default'},
+                        {'name': 'option 2', 'color': 'red'}
+                    ]
+                }
+            }
+        }
+        """
         super().__init__()
-        self.key = key
+        self.__key = key
         self[key] = {
             "multi_select": {
                 "options": list(option),
@@ -20,9 +57,9 @@ class MultiSelect(BaseProps):
 
     def __add__(self, other: Union[Option, List[Option]]):
         if isinstance(other, list):
-            self[self.key]["select"]["options"].extend(other)
+            self[self.__key]["select"]["options"].extend(other)
             return self
-        self[self.key]["select"]["options"].append(other)
+        self[self.__key]["select"]["options"].append(other)
         return self
 
     def __iadd__(self, other: Union[Option, List[Option]]):
@@ -30,10 +67,10 @@ class MultiSelect(BaseProps):
         return self
 
     def append(self, option: Option):
-        self[self.key]["select"]["options"].append(option)
+        self[self.__key]["select"]["options"].append(option)
 
     def extend(self, options: List[Option]):
-        self[self.key]["select"]["options"].extend(options)
+        self[self.__key]["select"]["options"].extend(options)
 
     def insert(self, option: Option, index: int):
-        self[self.key]["select"]["options"].insert(option, index)
+        self[self.__key]["select"]["options"].insert(option, index)
