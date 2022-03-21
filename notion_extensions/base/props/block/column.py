@@ -26,6 +26,14 @@ class Column(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import Column
+    >>> text=Text("text")
+    >>> Code(text)
+    {'type': 'code', 'code': {'rich_text': [{'type': 'text', 'text': {'content': 'text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}], 'language': ''}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

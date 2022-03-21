@@ -44,6 +44,14 @@ class Embed(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import Embed
+    >>> url="https..."
+    >>> Embed(url)
+    {'type': 'embed', 'embed': {'url': 'https...'}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
