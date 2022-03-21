@@ -23,6 +23,12 @@ class Equation(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+
+
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
