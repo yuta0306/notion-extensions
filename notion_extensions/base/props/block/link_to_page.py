@@ -32,6 +32,13 @@ class LinkToPage(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import LinkToPage
+    >>> LinkToPage
+    <class 'notion_extensions.base.props.block.link_to_page.LinkToPage'>
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

@@ -33,7 +33,6 @@ class Heading1(Block):
     {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
     'color': 'default'}}]}}
 
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

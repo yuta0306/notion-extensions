@@ -46,6 +46,17 @@ class Image(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import image
+    >>> caption=Text("Sample")
+    >>> url=Text("https://www.youtube.com/")
+    >>> Image=Text(caption,url)
+    >>> Image
+    {'type': 'text', 'text': {'content': {'type': 'text', 'text': {'content': 'Sample', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}, 'link': {'type': 'text', 'text': {'content': 'https://www.youtube.com/', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}
+    >>>
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -76,6 +87,15 @@ class Image(Block):
             Type of this file object. Possible values are: 'external', 'file'
         file : FileObject, optional
             FileObject
+
+        Usage
+        -----
+
+
+
+
+
+
         """
         super().__init__()
         base = []  # Aggregate Texts
