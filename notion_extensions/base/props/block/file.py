@@ -34,6 +34,16 @@ class File(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import File
+    >>> url="https://www.youtube.com/"
+    >>> File=Text(caption,url)
+    >>> File
+    {'type': 'text', 'text': {'content': {'type': 'text', 'text': {'content': 'Sample', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}, 'link':
+    'https://www.youtube.com/'}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

@@ -26,7 +26,10 @@ class Equation(Block):
 
     Usage
     -----
-
+    >>> from notion_extensions.base.props.block import Equation
+    >>> equation="y = x_1 ^ 2 + x_2 ^2"
+    >>> Equation(equation)
+    {'type': 'equation', 'equation': {'expression': 'y = x_1 ^ 2 + x_2 ^2'}}
 
 
     """
