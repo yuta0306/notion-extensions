@@ -28,6 +28,13 @@ class NumberedListItem(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import NumberedListItem
+    >>> NumberedListItem()
+    {'type': 'numbered_list_item', 'numbered_list_item': {'rich_text': []}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

@@ -22,6 +22,12 @@ class Paragraph(Block):
         Clear data of title
     json()
         Return this class as dictionary
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import Paragraph
+    >>> Paragraph()
+    {'object': 'block', 'type': 'paragraph', 'paragraph': {'rich_text': []}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

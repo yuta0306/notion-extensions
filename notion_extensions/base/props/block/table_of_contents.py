@@ -21,6 +21,12 @@ class TableOfContents(Block):
         Clear data of title
     json()
         Return this class as dictionary
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import TableOfContents
+    >>> TableOfContents()
+    {'type': 'table_of_contents', 'table_of_contents': {}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

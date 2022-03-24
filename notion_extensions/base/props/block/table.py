@@ -27,6 +27,13 @@ class TableRow(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import TableRow
+    >>> TableRow()
+    {'type': 'table_row', 'table_row': {'cells': []}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {

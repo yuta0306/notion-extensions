@@ -29,6 +29,13 @@ class OriginalSynced(Block):
         Clear data of title
     json()
         Return this class as dictionary
+
+    Usage
+    -----
+    >>> from notion_extensions.base.props.block import OriginalSynced
+    >>> OriginalSynced()
+    {'type': 'synced_block', 'synced_block': {'synced_from': None, 'children': []}}
+
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
