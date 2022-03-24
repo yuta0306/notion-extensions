@@ -17,7 +17,7 @@ class BreadCrumb(Block):
     clear()
         Clear data of title
     json()
-        Return this class as dictionary  
+        Return this class as dictionary
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -29,7 +29,7 @@ class BreadCrumb(Block):
         """
         BreadCrumb
         BreadCrumb property values of block
-        
+
         Usage
         -----
         >>> from notion_extensions.base.props.block import BreadCrumb
@@ -38,4 +38,3 @@ class BreadCrumb(Block):
         {'type': 'breadcrumb', 'breadcrumb': {}}
         """
         super().__init__()
-        

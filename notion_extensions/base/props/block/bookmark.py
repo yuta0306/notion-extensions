@@ -51,20 +51,20 @@ class Bookmark(Block):
         Usage
         ------
         >>> from notion_extensions.base.props.block import Bookmark
-        >>> from notion_extensions.base.props.common.common import Text,RichText,
-        >>> caption = Text("SambleBookMark", color="blue") 
+        >>> from notion_extensions.base.props.common.common import Text
+        >>> caption = Text("SambleBookMark", color="blue")
         >>> url = "https:..."
-        >>> bookmark = Bookmark(url, caption) 
+        >>> bookmark = Bookmark(url, caption)
         >>> bookmark
         {
-            'type': 'bookmark', 
+            'type': 'bookmark',
             'bookmark': {
-                'url': 'https://www.notion.so/4786e38471484bcc8012dd1c027b7428', 
+                'url': 'https://www.notion.so/4786e38471484bcc8012dd1c027b7428',
                 'caption': [
                     {
-                        'type': 'text', 
-                        'text': {'content': 'SambleBookMark', 'link': None}, 
-                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 
+                        'type': 'text',
+                        'text': {'content': 'SambleBookMark', 'link': None},
+                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
                                         'underline': False, 'code': False, 'color': 'blue'}
                     }
                 ]

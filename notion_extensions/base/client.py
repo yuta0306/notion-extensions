@@ -35,7 +35,7 @@ class NotionClient:
     version : str
         Notion version used for authorization
 
-    Methodsenv
+    Methods
     -------
     get_page(page_id: str)
         Get a page with page_id.
@@ -224,6 +224,8 @@ class NotionClient:
 
         Usage
         -----
+        >>> from notion_extensions import NotionClient
+        >>> client=NotionClient()
          client.get_page(page_id="https...")
 
         """
@@ -269,12 +271,11 @@ class NotionClient:
 
         Usage
         -----
+        >>> from notion_extensions import NotionClient
+        >>> client=NotionClient()
         >>> from notion_extensions.base.props.page import Title
-        >>> client.create_page(parent_id="PageURL",parent_type="page",properties=Title(title="TitleName"))
-
-
-
-
+        >>> title = Title(title="SamplePage")
+        >>> client.create_page(parent_id=url, parent_type="page", properties=title)
         """
         if parent_type not in (
             "database",
@@ -554,17 +555,9 @@ class NotionClient:
         Usage
         -----
         >>> from notion_extensions.base.props.block.children import Children
-        >>> from notion_extensions.base.props.block.heading import Heading1
-        >>> from notion_extensions.base.props.common.common import Text
-        >>> text = Text("Text")
-        >>> heading = text
         >>> heading = Heading1(text)
         >>> children = Children(heading)
         >>> client.append_block_children(block_id="https://", children=children)
-
-        if you want change text color
-        >>> text.color = "color"
-
         """
         # parse block_id from url-like
         block_id = self._parse_id(block_id, type_="block")
