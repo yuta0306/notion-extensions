@@ -26,22 +26,6 @@ class Bookmark(Block):
         Clear data of title
     json()
         Return this class as dictionary
-    
-    Usage
-    ------
-    >>> from notion_extensions.base.props.common.common import Text
-    >>> from notion_extensions.base.props.common import RichText
-    >>> from notion_extensions.base.props.block.paragraph import *
-    >>> text1 = Text("R",color="red") 
-    >>> text2 = Text("G",color="green")
-    >>> richText = RichText(text1,text2)       
-    >>> richText
-    >>> url=Text("https:...")
-    >>> caption=richText
-    >>> Bookmark=Text(url,caption)  
-    >>> Bookmark
-    {'type': 'text', 'text': {'content': {'type': 'text', 'text': {'content': 'https://www.notion.so/0ed6cb478e6f40bc9a9408f4f0d084a8', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}, 'link': {'rich_text': [{'type': 'text', 'text': {'content': 'R', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'red'}}, {'type': 'text', 'text': {'content': 'G', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'green'}}]}}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -63,6 +47,29 @@ class Bookmark(Block):
             Link to website the bookmark block will display
         *caption : Text or RichText
             Caption of the bookmark block
+
+        Usage
+        ------
+        >>> from notion_extensions.base.props.block import Bookmark
+        >>> from notion_extensions.base.props.common.common import Text,RichText,
+        >>> caption = Text("SambleBookMark", color="blue") 
+        >>> url = "https:..."
+        >>> bookmark = Bookmark(url, caption) 
+        >>> bookmark
+        {
+            'type': 'bookmark', 
+            'bookmark': {
+                'url': 'https://www.notion.so/4786e38471484bcc8012dd1c027b7428', 
+                'caption': [
+                    {
+                        'type': 'text', 
+                        'text': {'content': 'SambleBookMark', 'link': None}, 
+                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 
+                                        'underline': False, 'code': False, 'color': 'blue'}
+                    }
+                ]
+            }
+        }
         """
         super().__init__()
         base = []  # Aggregate Texts

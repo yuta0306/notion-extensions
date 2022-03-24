@@ -12,21 +12,12 @@ class BreadCrumb(Block):
     BreadCrumb
     BreadCrumb property values of block
 
-    Attributes
-    ----------
-
     Methods
     -------
     clear()
         Clear data of title
     json()
-        Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import BreadCrumb
-    >>> BreadCrumb()
-    {'type': 'breadcrumb', 'breadcrumb': {}}
+        Return this class as dictionary  
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -35,4 +26,16 @@ class BreadCrumb(Block):
     }
 
     def __init__(self):
+        """
+        BreadCrumb
+        BreadCrumb property values of block
+        
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import BreadCrumb
+        >>> bread_crumb=BreadCrumb()
+        >>> bread_crumb
+        {'type': 'breadcrumb', 'breadcrumb': {}}
+        """
         super().__init__()
+        
