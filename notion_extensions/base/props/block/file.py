@@ -38,6 +38,7 @@ class File(Block):
     Usage
     -----
     >>> from notion_extensions.base.props.block import File
+    >>> from notion_extensions.base.props.common import Text
     >>> url="https://www.youtube.com/"
     >>> caption=Text("Sample")
     >>> File=Text(caption,url)
