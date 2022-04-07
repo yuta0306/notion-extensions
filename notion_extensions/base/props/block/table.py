@@ -27,13 +27,6 @@ class TableRow(Block):
         Clear data of title
     json()
         Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import TableRow
-    >>> TableRow()
-    {'type': 'table_row', 'table_row': {'cells': []}}
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -48,11 +41,20 @@ class TableRow(Block):
         *cell: RichText,
     ):
         """
+        TableRow
+        TableRow property values of block
+
         Parameters
         ----------
         *cell : RichText
             Array of cell contents in horizontal display order.
             Each cell itself is an array of rich text objects
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import TableRow
+        >>> TableRow()
+        {'type': 'table_row', 'table_row': {'cells': []}}
         """
         super().__init__()
         for c in cell:
@@ -179,6 +181,12 @@ class Table(Block):
         has_row_header: bool = False,
     ):
         """
+        Table
+        Table property values of block
+        Tables are parent blocks for table row children. They can only contain children of type table_row.
+        When creating a table block via the Append block children endpoint,
+        the table must have at least 1 table_row whose cells array has the same length as the table_width
+
         Parameters
         ----------
         table_width : int
@@ -192,6 +200,10 @@ class Table(Block):
         has_row_header : bool, default=False
             Whether or not the table has a header row.
             If true, the first column in the table will appear visually distinct from the other columns.
+
+        Usage
+        -----
+        >>>
         """
         super().__init__()
         for table_row_ in table_row:  # Validate length of table row

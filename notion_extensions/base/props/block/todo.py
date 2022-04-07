@@ -47,6 +47,9 @@ class ToDo(Block):
         children: Optional[Children] = None,
     ):
         """
+        ToDo
+        ToDo property values of block
+
         Parameters
         ----------
         *text : Text or RichText
@@ -166,6 +169,9 @@ class ToDoList(Children):
         *item: ToDo,
     ):
         """
+        ToDoList
+        ToDoList property values of block
+
         Parameters
         ----------
         *item : ToDo

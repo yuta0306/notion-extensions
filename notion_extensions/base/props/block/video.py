@@ -16,8 +16,8 @@ __all__ = [
 
 class Video(Block):
     """
-     Video
-     Video property values of block
+    Video
+    Video property values of block
 
     Attributes
     ----------
@@ -54,6 +54,9 @@ class Video(Block):
         file: Optional[FileObject] = None,
     ):
         """
+        Video
+        Video property values of block
+
         Parameters
         ----------
         *caption : Text or RichText

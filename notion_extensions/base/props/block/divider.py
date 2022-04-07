@@ -21,14 +21,6 @@ class Divider(Block):
         Clear data of title
     json()
         Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import Divider
-    >>> Divider()
-    {'type': 'divider', 'divider': {}}
-
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -37,4 +29,12 @@ class Divider(Block):
     }
 
     def __init__(self):
+        """
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Divider
+        >>> divider = Divider()
+        >>> divider
+        {'type': 'divider', 'divider': {}}
+        """
         super().__init__()

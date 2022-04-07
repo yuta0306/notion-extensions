@@ -23,15 +23,6 @@ class Equation(Block):
         Clear data of title
     json()
         Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import Equation
-    >>> equation="y = x_1 ^ 2 + x_2 ^2"
-    >>> Equation(equation)
-    {'type': 'equation', 'equation': {'expression': 'y = x_1 ^ 2 + x_2 ^2'}}
-
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -48,6 +39,14 @@ class Equation(Block):
         ----------
         expression : str
             A KaTeX compatible string
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Equation
+        >>> equation = "y = x_1 ^ 2 + x_2 ^2"
+        >>> equation = Equation(equation)
+        >>> equation
+        {'type': 'equation', 'equation': {'expression': 'y = x_1 ^ 2 + x_2 ^2'}}
         """
         super().__init__()
         self["equation"]["expression"] = expression
