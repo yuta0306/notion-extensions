@@ -119,7 +119,7 @@ class Code(Block):
     TEMPLATE: Dict[str, Union[str, Dict]] = {
         "type": "code",
         "code": {
-            "text": [],
+            "rich_text": [],
             "language": "",
         },
     }
@@ -136,6 +136,12 @@ class Code(Block):
             Rich text in code block
         language : str, optional
             Coding language in code block
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Code
+        >>> Code()
+        {'type': 'code', 'code': {'rich_text': [], 'language': ''}}
         """
         super().__init__()
         base = []  # Aggregate Texts
@@ -148,7 +154,7 @@ class Code(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__text = RichText(key="text", *base)
+        self.__text = RichText(key="rich_text", *base)
         self["code"].update(self.__text)  # Add Texts with RichText Style
         if language is not None:
             self["code"]["language"] = language  # Add Language
@@ -163,8 +169,8 @@ class Code(Block):
 
     @text.setter
     def text(self, value: RichText) -> None:
-        if value.key != "text":
-            raise ValueError("RichText's key is must be `text`")
+        if value.key != "rich_text":
+            raise ValueError("RichText's key is must be `rich_text`")
         self.__text = value
         self["code"].update(self.__text)
 

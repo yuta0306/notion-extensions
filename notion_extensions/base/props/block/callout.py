@@ -1,8 +1,8 @@
 from typing import Dict, Optional, Union
 
+from ..common import Emoji, Icon, RichText, Text
 from .block import Block
 from .children import Children
-from ..common import Emoji, Icon, Text, RichText
 
 __all__ = [
     "Callout",
@@ -34,7 +34,7 @@ class Callout(Block):
     TEMPLATE: Dict[str, Union[str, Dict]] = {
         "type": "callout",
         "callout": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -53,6 +53,30 @@ class Callout(Block):
             icon
         children : Children, optional
             children
+
+        Usage
+        -----
+       >>> from notion_extensions.base.props.block import Callout
+       >>> from notion_extensions.base.props.common import Text, Emoji, Icon     
+       >>> text = Text("SampleText")
+       >>> icon = Icon(Emoji("☺"))
+       >>> callout = Callout(text,icon=icon)
+        {
+            'type': 'callout', 
+            'callout': {
+                'rich_text': [
+                    {
+                        'type': 'text', 
+                        'text': {'content': 'SampleText', 'link': None}, 
+                        'annotations': {
+                            'bold': False, 'italic': False, 'strikethrough': False, 
+                            'underline': False, 'code': False, 'color': 'default'
+                        }
+                    }
+                ], 
+            'icon': {'type': 'emoji', 'emoji': '☺'}
+            }
+
         """
         super().__init__()
         self["callout"].update(icon)  # Add Icon
@@ -66,7 +90,7 @@ class Callout(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__text = RichText(key="text", *base)
+        self.__text = RichText(key="rich_text", *base)
         self["callout"].update(self.__text)  # Add Texts with RichText Style
         if children is not None:
             self["callout"].update(children)  # if children exists, Add Chilren
@@ -77,8 +101,8 @@ class Callout(Block):
 
     @text.setter
     def text(self, value: RichText) -> None:
-        if value.key != "text":
-            raise ValueError("RichText's key is must be `text`")
+        if value.key != "rich_text":
+            raise ValueError("RichText's key is must be `rich_text`")
         self.__text = value
         self["callout"].update(self.__text)
 

@@ -55,6 +55,15 @@ class NotionClient:
             Name of the environment variable which has API key of Notion.
             If key is not given, name is used for getting API key.
             `name='NOTION_KEY'` as default.
+
+        Usage
+        ------
+        >>> from notion_extensions import NotionClient
+        >>> client=NotionClient()
+        >>> client
+        NotionClient
+        ::   key   :: **************************************************
+        :: version :: 2021-08-16
         """
         if key is None:
             key = os.environ.get(name)
@@ -64,7 +73,7 @@ class NotionClient:
                 )
 
         self.__key: Final[str] = key
-        self.__version: Final[str] = "2021-08-16"
+        self.__version: Final[str] = "2022-02-22"
         self.__headers: Final[Dict[str, str]] = {
             "Notion-Version": self.version,
             "Content-Type": "application/json",
@@ -212,6 +221,13 @@ class NotionClient:
         -------
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
+
+        Usage
+        -----
+        >>> from notion_extensions import NotionClient
+        >>> client=NotionClient()
+         client.get_page(page_id="https...")
+
         """
         page_id = self._parse_id(page_id)
         res = requests.get(
@@ -252,6 +268,14 @@ class NotionClient:
         -------
         Tuple[int, Dict[str, Any]]
             This returns status_code and response of dictionary
+
+        Usage
+        -----
+        >>> from notion_extensions import NotionClient
+        >>> client=NotionClient()
+        >>> from notion_extensions.base.props.page import Title
+        >>> title = Title(title="SamplePage")
+        >>> client.create_page(parent_id=url, parent_type="page", properties=title)
         """
         if parent_type not in (
             "database",
@@ -527,6 +551,14 @@ class NotionClient:
         ------
         ValueError
             if page_size is 0 or less than 0
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.children import Children
+        >>> text = Text("SampleText")
+        >>> heading = Heading1(text)
+        >>> children = Children(heading)
+        >>> client.append_block_children(block_id="https...", children=children)
         """
         # parse block_id from url-like
         block_id = self._parse_id(block_id, type_="block")

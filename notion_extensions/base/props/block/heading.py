@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Heading1",
@@ -30,7 +30,7 @@ class Heading1(Block):
         "object": "block",
         "type": "heading_1",
         "heading_1": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -38,6 +38,22 @@ class Heading1(Block):
         self,
         *text: Union[RichText, Text],
     ):
+        """
+        Heading1
+        Heading1 property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.heading import Heading1
+        >>> text = Text("Text")
+        >>> Heading1(text)
+        {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
+        'color': 'default'}}]}}
+        """
         super().__init__()
         base = []
         for t in text:
@@ -49,7 +65,7 @@ class Heading1(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {
@@ -145,7 +161,7 @@ class Heading2(Block):
         "object": "block",
         "type": "heading_2",
         "heading_2": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -153,6 +169,22 @@ class Heading2(Block):
         self,
         *text: Union[RichText, Text],
     ):
+        """
+        Heading2
+        Heading2 property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.heading import Heading2
+        >>> text = Text("Text")
+        >>> Heading2(text)
+        {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
+        'color': 'default'}}]}}
+        """
         super().__init__()
         base = []
         for t in text:
@@ -164,7 +196,7 @@ class Heading2(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {
@@ -260,7 +292,7 @@ class Heading3(Block):
         "object": "block",
         "type": "heading_3",
         "heading_3": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -268,6 +300,22 @@ class Heading3(Block):
         self,
         *text: Union[RichText, Text],
     ):
+        """
+        Heading3
+        Heading3 property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.heading import Heading3
+        >>> text = Text("Text")
+        >>> Heading3(text)
+        {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
+        'color': 'default'}}]}}
+        """
         super().__init__()
         base = []
         for t in text:
@@ -279,7 +327,7 @@ class Heading3(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
+        self.__texts = RichText(key="rich_text", *base)
 
         self.update(
             {

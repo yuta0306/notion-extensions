@@ -6,8 +6,8 @@ if sys.version_info >= (3, 8):  # "from typing" in Python 3.9 and earlier
 else:
     from typing_extensions import Literal
 
-from .block import Block
 from ...utils import parse_id
+from .block import Block
 
 __all__ = [
     "LinkToPage",
@@ -16,8 +16,8 @@ __all__ = [
 
 class LinkToPage(Block):
     """
-     LinkToPage
-     LinkToPage property values of block
+    LinkToPage
+    LinkToPage property values of block
 
     Attributes
     ----------
@@ -45,12 +45,21 @@ class LinkToPage(Block):
         id_: str,
     ):
         """
+        LinkToPage
+        LinkToPage property values of block
+
         Parameters
         ----------
         type_ : 'page' or 'database'
             Type of this link to page object. Possible values are: "page", "database"
         id_ : str
             Identifier for a page or a database page, URL style is ok.
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import LinkToPage
+        >>> LinkToPage
+        <class 'notion_extensions.base.props.block.link_to_page.LinkToPage'>
         """
         super().__init__()
         if type_ not in ("page", "database"):

@@ -6,8 +6,8 @@ if sys.version_info >= (3, 8):  # "from typing" in Python 3.9 and earlier
 else:
     from typing_extensions import Literal
 
+from ..common import FileObject, RichText, Text
 from .block import Block
-from ..common import Text, RichText, FileObject
 
 __all__ = [
     "Image",
@@ -76,6 +76,15 @@ class Image(Block):
             Type of this file object. Possible values are: 'external', 'file'
         file : FileObject, optional
             FileObject
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import image
+        >>> caption = Text("Sample")
+        >>> url = Text("https://www.youtube.com/")
+        >>> Image = Text(caption,url)
+        >>> Image
+        {'type': 'text', 'text': {'content': {'type': 'text', 'text': {'content': 'Sample', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}, 'link': {'type': 'text', 'text': {'content': 'https://www.youtube.com/', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}
         """
         super().__init__()
         base = []  # Aggregate Texts

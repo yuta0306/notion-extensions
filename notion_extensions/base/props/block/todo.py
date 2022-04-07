@@ -1,8 +1,8 @@
 from typing import Dict, Optional, Union
 
+from ..common import RichText, Text
 from .block import Block
 from .children import Children
-from ..common import Text, RichText
 
 __all__ = [
     "ToDo",
@@ -35,7 +35,7 @@ class ToDo(Block):
     TEMPLATE: Dict[str, Union[str, Dict, bool]] = {
         "type": "to_do",
         "to_do": {
-            "text": [],
+            "rich_text": [],
             "checked": False,
         },
     }
@@ -47,6 +47,9 @@ class ToDo(Block):
         children: Optional[Children] = None,
     ):
         """
+        ToDo
+        ToDo property values of block
+
         Parameters
         ----------
         *text : Text or RichText
@@ -55,6 +58,46 @@ class ToDo(Block):
             Whether the to_do is checked or not
         children : Children, optional
             Any nested children blocks of the to_do block
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import ToDo
+        >>> from notion_extensions.base.props.common import Text
+        >>> text = Text(text="unchecked")
+        >>> unchecked_todo = ToDo(text)
+        >>> unchecked_todo
+        {
+            'type': 'to_do',
+            'to_do': {
+                'text': [
+                    {
+                        'type': 'text',
+                        'text': {'content': 'unchecked', 'link': None},
+                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                        'underline': False, 'code': False, 'color': 'default'}
+                    }
+                ],
+                'checked': False
+            }
+        }
+
+        >>> text = Text(text="checked")
+        >>> checked_todo = ToDo(text, checked=True)
+        >>> checked_todo
+        {
+            'type': 'to_do',
+            'to_do': {
+                'text': [
+                    {
+                        'type': 'text',
+                        'text': {'content': 'checked', 'link': None},
+                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                        'underline': False, 'code': False, 'color': 'default'}
+                    }
+                ],
+                'checked': True
+            }
+        }
         """
         super().__init__()
         base = []  # Aggregate Texts
@@ -67,7 +110,7 @@ class ToDo(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__text = RichText(key="text", *base)
+        self.__text = RichText(key="rich_text", *base)
         self["to_do"].update(self.__text)  # Add Texts with RichText Style
         self["to_do"]["checked"] = checked  # Add Checked
         if children is not None:
@@ -79,8 +122,8 @@ class ToDo(Block):
 
     @text.setter
     def text(self, value: RichText) -> None:
-        if value.key != "text":
-            raise ValueError("RichText's key is must be `text`")
+        if value.key != "rich_text":
+            raise ValueError("RichText's key is must be `rich_text`")
         self.__text = value
         self["to_do"].update(self.__text)
 
@@ -126,9 +169,54 @@ class ToDoList(Children):
         *item: ToDo,
     ):
         """
+        ToDoList
+        ToDoList property values of block
+
         Parameters
         ----------
         *item : ToDo
             items of todo item
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import ToDo, ToDoList
+        >>> from notion_extensions.base.props.common import Text
+        >>> text = Text(text="unchecked")
+        >>> unchecked_todo = ToDo(text)
+        >>> text = Text(text="checked")
+        >>> checked_todo = ToDo(text, checked=True)
+        >>> ToDoList(unchecked_todo, checked_todo)
+        {
+            'children': [
+                {
+                    'type': 'to_do',
+                    'to_do': {
+                        'rich_text': [
+                            {
+                                'type': 'text',
+                                'text': {'content': 'unchecked', 'link': None},
+                                'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                                'underline': False, 'code': False, 'color': 'default'}
+                            }
+                        ],
+                        'checked': False
+                    }
+                },
+                {
+                    'type': 'to_do',
+                    'to_do': {
+                        'rich_text': [
+                            {
+                                'type': 'text',
+                                'text': {'content': 'checked', 'link': None},
+                                'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                                'underline': False, 'code': False, 'color': 'default'}
+                            }
+                        ],
+                    'checked': True
+                    }
+                }
+            ]
+        }
         """
         super().__init__(*item)

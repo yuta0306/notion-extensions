@@ -62,6 +62,14 @@ class Embed(Block):
         ----------
         url : str
             Link to website the embed block will display
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Embed
+        >>> url = "https..."
+        >>> embed = Embed(url)
+        >>> embed
+        {'type': 'embed', 'embed': {'url': 'https...'}}
         """
         super().__init__()
         self["embed"]["url"] = url

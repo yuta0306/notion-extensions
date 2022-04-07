@@ -1,7 +1,7 @@
 from typing import Dict, List, Union
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Paragraph",
@@ -28,7 +28,7 @@ class Paragraph(Block):
         "object": "block",
         "type": "paragraph",
         "paragraph": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -36,6 +36,20 @@ class Paragraph(Block):
         self,
         *text: Union[Text, RichText],
     ):
+        """
+        Paragraph
+        Paragraph property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Paragraph
+        >>> Paragraph()
+        {'object': 'block', 'type': 'paragraph', 'paragraph': {'rich_text': []}}
+        """
         super().__init__()
         base = []
         for t in text:
@@ -47,8 +61,7 @@ class Paragraph(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__texts = RichText(key="text", *base)
-
+        self.__texts = RichText(key="rich_text", *base)
         self.update(
             {
                 "object": "block",

@@ -29,4 +29,12 @@ class Divider(Block):
     }
 
     def __init__(self):
+        """
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Divider
+        >>> divider = Divider()
+        >>> divider
+        {'type': 'divider', 'divider': {}}
+        """
         super().__init__()

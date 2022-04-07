@@ -1,7 +1,7 @@
 from typing import Dict, Union
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Bookmark",
@@ -47,6 +47,29 @@ class Bookmark(Block):
             Link to website the bookmark block will display
         *caption : Text or RichText
             Caption of the bookmark block
+
+        Usage
+        ------
+        >>> from notion_extensions.base.props.block import Bookmark
+        >>> from notion_extensions.base.props.common import Text
+        >>> caption = Text("SambleBookMark", color="blue")
+        >>> url = "https:..."
+        >>> bookmark = Bookmark(url, caption)
+        >>> bookmark
+        {
+            'type': 'bookmark',
+            'bookmark': {
+                'url': 'https://www.notion.so/4786e38471484bcc8012dd1c027b7428',
+                'caption': [
+                    {
+                        'type': 'text',
+                        'text': {'content': 'SambleBookMark', 'link': None},
+                        'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                        'underline': False, 'code': False, 'color': 'blue'}
+                    }
+                ]
+            }
+        }
         """
         super().__init__()
         base = []  # Aggregate Texts

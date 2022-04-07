@@ -29,6 +29,14 @@ class Children(Block):
         self,
         *block: Block,
     ):
+        """
+        Children
+        Children property values of block
+
+        Parameters
+        ----------
+        block : *block
+        """
         super().__init__()
         self.__blocks = list(block)
         self["children"] = self.__blocks

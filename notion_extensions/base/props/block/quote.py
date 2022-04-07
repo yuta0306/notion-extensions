@@ -1,8 +1,8 @@
 from typing import Dict, Optional, Union
 
+from ..common import RichText, Text
 from .block import Block
 from .children import Children
-from ..common import Text, RichText
 
 __all__ = [
     "Quote",
@@ -32,7 +32,7 @@ class Quote(Block):
     TEMPLATE: Dict[str, Union[str, Dict]] = {
         "type": "quote",
         "quote": {
-            "text": [],
+            "rich_text": [],
         },
     }
 
@@ -42,12 +42,22 @@ class Quote(Block):
         children: Optional[Children] = None,
     ):
         """
+        Quote
+        Quote property values of block
+
         Parameters
         ----------
         *text : Text or RichText
             text
         children : Children, optional
             children
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Quote
+        >>> quote = Quote()
+        >>> quote
+        {'type': 'quote', 'quote': {'rich_text': []}}
         """
         super().__init__()
         base = []  # Aggregate Texts
@@ -60,7 +70,7 @@ class Quote(Block):
                 raise ValueError(
                     f"Expected type is `RichText` or `Text`, but {type(t)} is given"
                 )
-        self.__text = RichText(key="text", *base)
+        self.__text = RichText(key="rich_text", *base)
         self["quote"].update(self.__text)  # Add Texts with RichText Style
         if children is not None:
             self["quote"].update(children)  # if children exists, Add Chilren
@@ -71,7 +81,7 @@ class Quote(Block):
 
     @text.setter
     def text(self, value: RichText) -> None:
-        if value.key != "text":
+        if value.key != "rich_text":
             raise ValueError("RichText's key is must be `text`")
         self.__text = value
         self["quote"].update(self.__text)

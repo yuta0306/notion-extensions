@@ -6,18 +6,18 @@ if sys.version_info >= (3, 8):  # "from typing" in Python 3.9 and earlier
 else:
     from typing_extensions import Literal
 
+from ..common import FileObject, RichText, Text
 from .block import Block
-from ..common import Text, RichText, FileObject
 
 __all__ = [
-    "Pdf",
+    "PDF",
 ]
 
 
-class Pdf(Block):
+class PDF(Block):
     """
-     Pdf
-     Pdf property values of block
+    PDF
+    PDF property values of block
 
     Attributes
     ----------
@@ -54,6 +54,9 @@ class Pdf(Block):
         file: Optional[FileObject] = None,
     ):
         """
+        PDF
+        PDF property values of block
+
         Parameters
         ----------
         *caption : Text or RichText
@@ -64,6 +67,15 @@ class Pdf(Block):
             Type of this file object. Possible values are: 'external', 'file'
         file : FileObject, optional
             FileObject
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import PDF
+        >>> url = "https://www.youtube.com/"
+        >>> caption = Text("Sample")
+        >>> pdf = PDF(caption,url)
+        >>> pdf
+        {'type': 'text', 'text': {'content': {'type': 'text', 'text': {'content': 'Sample', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'color': 'default'}}, 'link': 'https://www.youtube.com/'}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False, 'c
         """
         super().__init__()
         base = []  # Aggregate Texts
