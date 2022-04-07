@@ -555,9 +555,10 @@ class NotionClient:
         Usage
         -----
         >>> from notion_extensions.base.props.block.children import Children
+        >>> text = Text("SampleText")
         >>> heading = Heading1(text)
         >>> children = Children(heading)
-        >>> client.append_block_children(block_id="https://", children=children)
+        >>> client.append_block_children(block_id="https...", children=children)
         """
         # parse block_id from url-like
         block_id = self._parse_id(block_id, type_="block")
