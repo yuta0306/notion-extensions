@@ -28,13 +28,6 @@ class NumberedListItem(Block):
         Clear data of title
     json()
         Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import NumberedListItem
-    >>> NumberedListItem()
-    {'type': 'numbered_list_item', 'numbered_list_item': {'rich_text': []}}
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -56,6 +49,13 @@ class NumberedListItem(Block):
             text
         children : Children, optional
             children
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import NumberedListItem
+        >>> numberd_list_item = NumberedListItem()
+        >>> numberd_list_item
+        {'type': 'numbered_list_item', 'numbered_list_item': {'rich_text': []}}
         """
         super().__init__()
         base = []  # Aggregate Texts
@@ -120,5 +120,12 @@ class NumberedList(Children):
         ----------
         *item : NumberedListItem
             items of numbered list item
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import NumberedList
+        >>> numberd_list = NumberedList()
+        >>> numberd_list
+        {'type': 'numbered_list_item', 'numbered_list_item': {'rich_text': []}}
         """
         super().__init__(*item)

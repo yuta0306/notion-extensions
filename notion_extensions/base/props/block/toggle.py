@@ -43,6 +43,9 @@ class Toggle(Block):
         children: Optional[Children] = None,
     ):
         """
+        Toggle
+        Toggle property values of block
+
         Parameters
         ----------
         *text : RichText

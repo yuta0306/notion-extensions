@@ -114,13 +114,6 @@ class Code(Block):
         Clear data of title
     json()
         Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import Code
-    >>> Code()
-    {'type': 'code', 'code': {'rich_text': [], 'language': ''}}
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -143,6 +136,12 @@ class Code(Block):
             Rich text in code block
         language : str, optional
             Coding language in code block
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Code
+        >>> Code()
+        {'type': 'code', 'code': {'rich_text': [], 'language': ''}}
         """
         super().__init__()
         base = []  # Aggregate Texts

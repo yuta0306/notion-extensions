@@ -27,12 +27,6 @@ class Quote(Block):
         Clear data of title
     json()
         Return this class as dictionary
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import Quote
-    >>> Quote()
-    {'type': 'quote', 'quote': {'rich_text': []}}
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -48,12 +42,22 @@ class Quote(Block):
         children: Optional[Children] = None,
     ):
         """
+        Quote
+        Quote property values of block
+
         Parameters
         ----------
         *text : Text or RichText
             text
         children : Children, optional
             children
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import Quote
+        >>> quote = Quote()
+        >>> quote
+        {'type': 'quote', 'quote': {'rich_text': []}}
         """
         super().__init__()
         base = []  # Aggregate Texts

@@ -24,15 +24,6 @@ class Heading1(Block):
         Clear data of title
     json()
         Return this class as dictionary
-
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block.heading import Heading1
-    >>> text = Text("Text")
-    >>> Heading1(text)
-    {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
-    'color': 'default'}}]}}
-
     """
 
     TEMPLATE: Dict[str, Union[str, Dict]] = {
@@ -47,6 +38,22 @@ class Heading1(Block):
         self,
         *text: Union[RichText, Text],
     ):
+        """
+        Heading1
+        Heading1 property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.heading import Heading1
+        >>> text = Text("Text")
+        >>> Heading1(text)
+        {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
+        'color': 'default'}}]}}
+        """
         super().__init__()
         base = []
         for t in text:
@@ -162,6 +169,22 @@ class Heading2(Block):
         self,
         *text: Union[RichText, Text],
     ):
+        """
+        Heading2
+        Heading2 property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.heading import Heading2
+        >>> text = Text("Text")
+        >>> Heading2(text)
+        {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
+        'color': 'default'}}]}}
+        """
         super().__init__()
         base = []
         for t in text:
@@ -277,6 +300,22 @@ class Heading3(Block):
         self,
         *text: Union[RichText, Text],
     ):
+        """
+        Heading3
+        Heading3 property values of block
+
+        Parameters
+        ----------
+        text : *text
+
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block.heading import Heading3
+        >>> text = Text("Text")
+        >>> Heading3(text)
+        {'object': 'block', 'type': 'heading_1', 'heading_1': {'rich_text': [{'type': 'text', 'text': {'content': 'Text', 'link': None}, 'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 'underline': False, 'code': False,
+        'color': 'default'}}]}}
+        """
         super().__init__()
         base = []
         for t in text:
