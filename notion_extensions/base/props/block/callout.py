@@ -56,9 +56,27 @@ class Callout(Block):
 
         Usage
         -----
-        >>> from notion_extensions.base.props.block import Callout
-        >>> Callout()
-        {'type': 'callout', 'callout': {'text': [], 'icon': {'type': 'emoji', 'emoji': ''}}}
+       >>> from notion_extensions.base.props.block import Callout
+       >>> from notion_extensions.base.props.common import Text, Emoji, Icon     
+       >>> text = Text("SampleText")
+       >>> icon = Icon(Emoji("☺"))
+       >>> callout = Callout(text,icon=icon)
+        {
+            'type': 'callout', 
+            'callout': {
+                'rich_text': [
+                    {
+                        'type': 'text', 
+                        'text': {'content': 'SampleText', 'link': None}, 
+                        'annotations': {
+                            'bold': False, 'italic': False, 'strikethrough': False, 
+                            'underline': False, 'code': False, 'color': 'default'
+                        }
+                    }
+                ], 
+            'icon': {'type': 'emoji', 'emoji': '☺'}
+            }
+
         """
         super().__init__()
         self["callout"].update(icon)  # Add Icon
