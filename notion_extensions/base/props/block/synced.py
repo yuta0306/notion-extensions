@@ -57,9 +57,33 @@ class OriginalSynced(Block):
 
         Usage
         -----
-        >>> from notion_extensions.base.props.block import OriginalSynced
-        >>> OriginalSynced()
-        {'type': 'synced_block', 'synced_block': {'synced_from': None, 'children': []}}
+        >>> from notion_extensions.base.props.block import OriginalSynced, Paragraph
+        >>> from notion_extensions.base.props.common import Text
+        >>> text = Text("original synced", color="red")
+        >>> paragraph = Paragraph(text)
+        >>> original_synced = OriginalSynced(paragraph)
+        >>> original_synced
+        {
+            'type': 'synced_block',
+            'synced_block': {
+                'synced_from': None,
+                'children': [
+                    {
+                        'object': 'block', 'type': 'paragraph',
+                        'paragraph': {
+                            'rich_text': [
+                                {
+                                    'type': 'text',
+                                    'text': {'content': 'original synced', 'link': None},
+                                    'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                    'underline': False, 'code': False, 'color': 'red'}
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
         """
         super().__init__()
         self.__children = Children(*child)
@@ -121,9 +145,41 @@ class ReferenceSynced(Block):
 
         Usage
         -----
-        >>> from notion_extensions.base.props.block import ReferenceSynced
-        >>> ReferenceSynced()
-        {'type': 'synced_block', 'synced_block': {'synced_from': None, 'children': []}}
+        >>> from notion_extensions.base.props.block import (
+        ...     OriginalSynced,
+        ...     Paragraph,
+        ...     ReferenceSynced,
+        ... )
+        >>> from notion_extensions.base.props.common import Text
+        >>> text = Text("original synced", color="red")
+        >>> paragraph = Paragraph(text)
+        >>> original_synced = OriginalSynced(paragraph)
+        >>> children = Children(original_synced)
+        >>> status_code, res = client.append_block_children(block_id=url, children=children)
+        >>> block_id = res["results"][0]["id"]
+        >>> reference_synced = ReferenceSynced(block_id=block_id)
+        {
+            'type': 'synced_block',
+            'synced_block': {
+                'synced_from': None,
+                'children': [
+                    {
+                        'object': 'block',
+                        'type': 'paragraph',
+                        'paragraph': {
+                            'rich_text': [
+                                {
+                                    'type': 'text',
+                                    'text': {'content': 'original synced', 'link': None},
+                                    'annotations': {'bold': False, 'italic': False, 'strikethrough': False,
+                                    'underline': False, 'code': False, 'color': 'red'}
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
         """
         super().__init__()
         self["synced_block"]["synced_from"]["block_id"] = block_id
