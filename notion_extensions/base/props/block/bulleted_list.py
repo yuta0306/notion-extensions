@@ -133,5 +133,30 @@ class BulletedList(Children):
         ----------
         *item : BulletedListItem
             items of bulleted list item
+        
+        Usage
+        -----
+        >>> from notion_extensions.base.props.block import BulleteList  
+        >>> bulleted_list=BulletedList(bulleted_list_item)
+        {
+            'children': [
+                {
+                    'type': 'bulleted_list_item',
+                    'bulleted_list_item': 
+                        {
+                            'rich_text': [
+                                {
+                                    'type': 'text', 
+                                    'text': {'content': 'text', 'link': None}, 
+                                    'annotations': {'bold': False, 'italic': False, 'strikethrough': False, 
+                                    'underline': False, 'code': False, 'color': 'default'}
+                                }
+                            ]
+                        }
+                }
+            ]
+        }
+
+
         """
         super().__init__(*item)
