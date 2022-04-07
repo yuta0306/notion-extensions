@@ -33,7 +33,7 @@ class BreadCrumb(Block):
         Usage
         -----
         >>> from notion_extensions.base.props.block import BreadCrumb
-        >>> bread_crumb=BreadCrumb()
+        >>> bread_crumb = BreadCrumb()
         >>> bread_crumb
         {'type': 'breadcrumb', 'breadcrumb': {}}
         """

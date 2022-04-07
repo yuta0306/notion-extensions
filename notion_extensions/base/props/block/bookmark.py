@@ -1,7 +1,7 @@
 from typing import Dict, Union
 
+from ..common import RichText, Text
 from .block import Block
-from ..common import Text, RichText
 
 __all__ = [
     "Bookmark",
@@ -51,7 +51,7 @@ class Bookmark(Block):
         Usage
         ------
         >>> from notion_extensions.base.props.block import Bookmark
-        >>> from notion_extensions.base.props.common.common import Text
+        >>> from notion_extensions.base.props.common import Text
         >>> caption = Text("SambleBookMark", color="blue")
         >>> url = "https:..."
         >>> bookmark = Bookmark(url, caption)

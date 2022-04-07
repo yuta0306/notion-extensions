@@ -21,13 +21,6 @@ class Children(Block):
         Clear data of title
     json()
         Return this class as dictionary
-    
-    Usage
-    -----
-    >>> from notion_extensions.base.props.block import Children 
-    >>> Children()
-    {'children': []}
-    
     """
 
     TEMPLATE: Dict[str, List[Block]] = {"children": []}
@@ -36,6 +29,14 @@ class Children(Block):
         self,
         *block: Block,
     ):
+        """
+        Children
+        Children property values of block
+
+        Parameters
+        ----------
+        block : *block
+        """
         super().__init__()
         self.__blocks = list(block)
         self["children"] = self.__blocks
